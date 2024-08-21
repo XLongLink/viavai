@@ -1,8 +1,10 @@
 from setuptools import setup, find_packages
 
+
 setup(
     name='viavai',  # Name of your package on PyPI
-    version='0.1.0',  # Initial version
+    use_scm_version=True,
+    setup_requires=['setuptools_scm'],
     description='A brief description of my package',
     long_description=open('README.md').read(),
     long_description_content_type='text/markdown',
