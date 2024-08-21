@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 setup(
-    name='photonix',  # Name of your package on PyPI
+    name='viavai',  # Name of your package on PyPI
     version='0.1.0',  # Initial version
     description='A brief description of my package',
     long_description=open('README.md').read(),
