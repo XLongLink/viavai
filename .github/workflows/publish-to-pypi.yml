@@ -15,11 +15,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Verify setup.py presence
-        run: |
-          ls -la   # Lists all files to verify setup.py is in the root
-          cat setup.py  # Output setup.py content to ensure it's found
-
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
