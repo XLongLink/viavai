@@ -3,6 +3,9 @@ name: Build and Upload Python Package
 on:
   release:
     types: [published]
+  push:
+    branches:
+      - main 
 
 jobs:
   build-and-deploy:
@@ -12,10 +15,15 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Verify setup.py presence
+        run: |
+          ls -la   # Lists all files to verify setup.py is in the root
+          cat setup.py  # Output setup.py content to ensure it's found
+
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.11'  # Specify your Python version
+          python-version: '3.x'  # Specify your Python version
 
       - name: Install build tools
         run: |
@@ -28,7 +36,6 @@ jobs:
 
       - name: Upload to PyPI
         env:
-          TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
-          TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
+          TWINE_PASSWORD: ${{ secrets.PYPI_TOKEN }}
         run: |
           python -m twine upload dist/*
