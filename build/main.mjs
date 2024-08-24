@@ -3,6 +3,8 @@ import webpack from 'webpack';
 
 
 class WebpackConfig {
+    /* Handle the logic to compile the index.jsx to a single bundle.js file */
+
     constructor(input = "ui/index.jsx", output = "viavai/static/bundle.js") {
         const rootDir = process.cwd();
         const outputPath = path.dirname(output);

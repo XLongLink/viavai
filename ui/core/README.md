@@ -1,3 +1,3 @@
 # ViaVai - Core
 
-Core components of ViaVai 
+Core components of ViaVai
