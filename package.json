@@ -2,7 +2,7 @@
     "scripts": {
         "build": "npm run libs && npm run main && npm run components",
         "libs": "python .\\build\\libraries.py",
-        "main": "node .\\build\\main.js",
+        "main": "node .\\build\\main.mjs",
         "components": "node .\\build\\components.js"
     },
     "dependencies": {
