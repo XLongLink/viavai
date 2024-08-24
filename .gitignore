@@ -1,4 +1,3 @@
-build
 venv 
 .venv
 
@@ -6,3 +5,5 @@ venv
 dist
 
 __pycache__/
+
+node_modules/
