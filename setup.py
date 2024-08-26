@@ -6,6 +6,7 @@ setup(
     use_scm_version=True,
     setup_requires=['setuptools_scm'],
     packages=find_packages(),
+    include_package_data=True
     description="A sample Python library called Viavai",
     long_description=open('README.md').read(),
     long_description_content_type='text/markdown',
