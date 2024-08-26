@@ -286,3 +286,14 @@ from viavai.api import get, post, put, delete
 def get_data():
     return {"data": "Hello World"}
 ```
+
+
+## Implementation
+
+The frontend part is implemented using React. All the libraries are downloaded from the CDN and isolated from the rest of the code, as they are used across the differet components. The `ui/index.jsx` is compiled to `bundle.js` and each react component (Buttons, Text, etc) is compiled to a separate file and are loaded when needed.
+
+Under `ui/index.jsx` is located the code for the dynamic react render. Is configured to dynamically load the components in the order that the server sends them. This allows to controll the entire application from the python code. The `index` is set to follows the basic layout of the application - sidebar, header, main. Is reposible to open a websocket connection to the server, send the events to the server and update the components.
+
+Each component has to work as a standalone element, so that can be created with a fix set of parameters and events triggers. The parameters should not be states as they cannot be updated from the server. The events are triggered from the server and the client has to handle them.
+
+The state of the frontend is always synced with the server, this is done using a nested json structure. Every time a component is updated, the server sends the new state of the component and the client updates the component. We give to each component an unique id so that the server can locate any changes in the component and apply the changes.
