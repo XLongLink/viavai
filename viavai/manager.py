@@ -1,7 +1,9 @@
 import json
 import uuid
+import asyncio
 from fastapi import WebSocket
 from .app import App
+from .context import context, UserContext
 
 
 class ConnectionManager:
@@ -18,22 +20,23 @@ class ConnectionManager:
     async def connect(self, websocket: WebSocket, *, token: str | None = None) -> str:
         """Connect a new client and return the connection ID"""
         await websocket.accept()
+
+        # NOTE: For now, we generate a new connection ID for each connection
         connection_id = str(uuid.uuid4())
 
-        # TODO: If a token if provided, then load the app from the token cache
+        # Create the usercontext for the current connection
+        user_context = UserContext(connection_id)
+        context.__var__.set(user_context)
 
-        # Create a new app for the connection
-        if isinstance(self._app, App):
-            self._apps[connection_id] = self._app
-        else:
-            self._apps[connection_id] = self._app()
+        # Initialize the App for the current connection
+        # The initialization is done on a separate thread in case of heavy computation
+        app = await asyncio.to_thread(lambda: self._app())
+        self._apps[connection_id] = app
 
-        # Render the app and send it to the client
-        try:
-            obj = self._apps[connection_id].json()
-            await websocket.send_text(json.dumps(obj))
-        except Exception as e:
-            await websocket.send_text(str(e))
+        # Send to the user the first render of the app
+        # NOTE: The render should be fast and not block the event loop
+        obj = self._apps[connection_id].json()
+        await websocket.send_text(json.dumps(obj))
 
         # Save the connection and return the ID
         self._connections[connection_id] = websocket
@@ -52,5 +55,13 @@ class ConnectionManager:
 
     async def message(self, connection_id: str, message: str):
         """Send a message to a specific connection"""
-        self._apps[connection_id].handle_event(message)
-        # await self._connections[connection_id].send_text(message)
+
+        # When a message arrives, can be included
+        # An update to the app state
+        # A user interaction
+        def handle_message(message: str, app: App):
+            return app.handle_event(message)
+
+        app = self._apps[connection_id]
+        response = await asyncio.to_thread(handle_message, message, app)
+        await self._connections[connection_id].send_text(response)
