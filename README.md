@@ -73,6 +73,7 @@ from viavai import context
 # Key value store
 context.get("user")
 context.set("user", "John")
+context.set("theme", "dark") # Theme
 
 # Navigate to a specific page
 context.navigate("/home")
@@ -80,7 +81,7 @@ context.navigate("/home")
 # Signaling - See core module
 context.emit("event_name", **data)
 
-# Clipboard
+# Clipboard ?
 context.set_clipboard("Hello World")
 context.get_clipboard()
 
@@ -88,7 +89,6 @@ context.get_clipboard()
 context.create_alert("Hello World")
 context.create_modal("Hello World")
 ```
-
 
 <br />
 
