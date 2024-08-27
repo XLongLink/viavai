@@ -3,7 +3,10 @@ import webpack from 'webpack';
 
 
 class WebpackConfig {
-    /* Handle the logic to compile the index.jsx to a single bundle.js file */
+    /* 
+        Handle the logic to compile the index.jsx to a single bundle.js file
+        TODO: Check the timestamp of the files to avoid recompiling if the files are not changed 
+    */
 
     constructor(input = "ui/index.jsx", output = "viavai/static/bundle.js") {
         const rootDir = process.cwd();
@@ -45,13 +48,6 @@ class WebpackConfig {
                 console.error(err || stats.toJson().errors);
                 return;
             }
-            // console.log(stats.toString({
-            //     colors: true,
-            //     modules: false,
-            //     children: false,
-            //     chunks: false,
-            //     chunkModules: false,
-            // }));
         });
     }
 }

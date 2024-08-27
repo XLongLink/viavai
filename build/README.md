@@ -1,5 +1,8 @@
 # ViaVai - Build
 
+This folder contains the build script that prepare the javascript code to be used from the backend.
+
+
 <br />
 
 ## Main

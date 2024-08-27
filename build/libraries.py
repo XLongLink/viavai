@@ -3,6 +3,7 @@ import requests
 from urllib.parse import urljoin
 import json
 
+# TODO: Change this to be a js file
 # Function to download a file with redirects
 def download_file(url, dest):
     if os.path.exists(dest):
