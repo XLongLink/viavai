@@ -5,14 +5,37 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Simple React App</title>
-    <script src=".dist/libs/react.production.min.js"></script>
-    <script src=".dist/libs/react-dom.production.min.js"></script>
-
+    <script src="static/libs/react.production.min.js"></script>
+    <script src="static/libs/react-dom.production.min.js"></script>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
 </head>
 
 <body>
     <div id="root"></div>
-    <script src=".dist/bundle.js"></script>
+    <script>
+        // Initialize the WebSocket connection and assign it to the window object
+        window.websocket = new WebSocket('{{SERVER_URL}}');
+
+        // Log connection status
+        window.websocket.onopen = function (event) {
+            console.log('WebSocket is open now.');
+        };
+
+        window.websocket.onmessage = function (event) {
+            console.log('Message from server: ', event.data);
+        };
+
+        window.websocket.onclose = function (event) {
+            console.log('WebSocket is closed now.');
+        };
+
+        window.websocket.onerror = function (error) {
+            console.error('WebSocket error observed:', error);
+        };
+    </script>
+    <script src="static/bundle.js"></script>
 </body>
 
 </html>

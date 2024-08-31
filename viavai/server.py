@@ -37,6 +37,7 @@ class Server:
         # Register routes and handlers
         self._api.get('/')(self.get_index)
         self._api.get('/static/bundle.js')(self.get_bundle)
+        self._api.get('/static/libs/{library}')(self.get_library)
         # TODO: Add a route for the components
         # TODO: Add a route for the plots
         # TODO: Add a route for the maps
@@ -56,6 +57,12 @@ class Server:
         file_path = os.path.join(dir_current, 'static', 'bundle.js')
         return FileResponse(path=file_path, media_type='application/javascript')
     
+    async def get_library(self, request: Request, library: str):
+        dir_current = os.path.dirname(os.path.abspath(__file__))
+        file_path = os.path.join(dir_current, 'static', 'libs', library)
+        return FileResponse(path=file_path, media_type='application/javascript')
+                            
+
     async def websocket_endpoint(self, websocket: WebSocket, token: str | None = Query(None)):
         conn_id = await self._manager.connect(websocket, token=token)
 
