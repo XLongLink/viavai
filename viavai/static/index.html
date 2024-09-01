@@ -6,18 +6,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{TITLE}}</title>
     {{ LIBRARIES }}
-    {{ DEVELOPMENT }}
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
 </head>
 
 <body>
     <div id="root"></div>
     <script>
-        // Initialize the WebSocket connection and assign it to the window object
-
-
-        window.SERVER_URL = '{{ SERVER_URL }}';
+        window.SERVER = '{{ SERVER }}';
     </script>
-    <script src="static/bundle.js"></script>
+    <script src="static/bundle.js?v={{ CACHE_BUST }}"></script>
 </body>
 
 </html>

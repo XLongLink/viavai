@@ -1,7 +1,9 @@
-// import React from "react";
+import React from "react";
 
-export default Test = () => {
+export default function Test() {
     return (
         <h1> This is a test component </h1>
     )
 };
+
+window.test = Test;

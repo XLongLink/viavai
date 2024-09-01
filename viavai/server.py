@@ -1,9 +1,11 @@
 import os
 import uvicorn
+import datetime
 from fastapi import FastAPI, Request, Query
 from fastapi.responses import HTMLResponse, FileResponse
 from fastapi.websockets import WebSocket, WebSocketDisconnect
 from jinja2 import Environment, FileSystemLoader
+
 from .app import App
 from .manager import ConnectionManager
 
@@ -31,6 +33,8 @@ class Server:
         self._api.get('/')(self.get_index)
         self._api.get('/static/bundle.js')(self.get_bundle)
         self._api.get('/static/libs/{library}')(self.get_library)
+        self._api.get('/static/ui/{component}')(self.get_ui)
+        self._api.get('/get-component')(self.get_component)
         # TODO: Add a route for the components
         # TODO: Add a route for the plots
         # TODO: Add a route for the maps
@@ -38,6 +42,10 @@ class Server:
 
         # Registe the websocket endpoint
         self._api.websocket('/ws')(self.websocket_endpoint)
+
+    async def get_component(self, request: Request):
+        """Return a specific component"""
+        return {'component': "test"}
 
     async def get_index(self, request: Request):
         """Render the index.html file, with the right data injected"""
@@ -54,15 +62,11 @@ class Server:
             if lib.endswith('.js'):
                 libs.append(f'<script src="static/libs/{lib}"></script>')
 
-        development = """<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">\n"""
-        development += """\t<meta http-equiv="Pragma" content="no-cache">\n"""
-        development += """\t<meta http-equiv="Expires" content="0">"""
-
         content = template.render(
             TITLE='ViaVai',
             LIBRARIES='\n\t'.join(libs),
-            DEVELOPMENT=development,
-            SERVER_URL=f'ws://{self._host}:{self._port}/ws'
+            SERVER=f'{self._host}:{self._port}', # ws://{}/ws
+            CACHE_BUST=datetime.datetime.now().timestamp()
         )
 
         return HTMLResponse(content)
@@ -78,9 +82,17 @@ class Server:
         dir_current = os.path.dirname(os.path.abspath(__file__))
         file_path = os.path.join(dir_current, 'static', 'libs', library)
         return FileResponse(path=file_path, media_type='application/javascript')
-                            
+
+    async def get_ui(self, request: Request, component: str):
+        """Return a specific static file"""
+        dir_current = os.path.dirname(os.path.abspath(__file__))
+        file_path = os.path.join(dir_current, 'static', 'ui', component)
+        return FileResponse(path=file_path, media_type='application/javascript')
+                
     async def websocket_endpoint(self, websocket: WebSocket, token: str | None = Query(None)):
         conn_id = await self._manager.connect(websocket, token=token)
+
+        print(f'New connection: {conn_id}')
 
         # Keep the connection alive and handle incoming messages
         try:

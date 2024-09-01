@@ -34,6 +34,8 @@ export class WebpackPackager {
             output: {
                 path: path.resolve(outputFolder),
                 filename: outputFilename,
+                libraryTarget: 'umd',
+                globalObject: 'this',
             },
             module: {
                 rules: [

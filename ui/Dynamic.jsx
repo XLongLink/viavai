@@ -7,7 +7,7 @@ const Dynamic = ({ componentName }) => {
     useEffect(() => {
         const loadComponentScript = () => {
             if (!scriptLoadedRef.current) {
-                const scriptPath = `.dist/${componentName}.js`;
+                const scriptPath = `static/ui/${componentName}.js?v=${Date.now()}`;
                 console.log(`Loading script: ${scriptPath}`);
 
                 // Dynamically load the script
@@ -17,6 +17,8 @@ const Dynamic = ({ componentName }) => {
 
                 script.onload = () => {
                     const LoadedComponent = window[componentName];
+                    console.log(`Loaded component: ${componentName}`);
+                    console.log('LoadedComponent', LoadedComponent);
                     setComponent(() => LoadedComponent);
                     scriptLoadedRef.current = true;
                 };
