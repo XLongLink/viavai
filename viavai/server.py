@@ -29,10 +29,10 @@ class Server:
 
         # Since is server as a library, get the path where the current file is saved
         dir_current = os.path.dirname(os.path.abspath(__file__))
-        dir_static = os.path.join(dir_current, 'static')
+        self._static = os.path.join(dir_current, 'static')
         
         # Load the template engine
-        self._templates = Environment(loader=FileSystemLoader(dir_static))
+        self._templates = Environment(loader=FileSystemLoader(self._static))
 
         # Register routes and handlers
         self._api.get('/')(self.get_index)
@@ -47,9 +47,30 @@ class Server:
         self._api.websocket('/ws')(self.websocket_endpoint)
 
     async def get_index(self, request: Request):
-        # TODO: Add the libraries to the template
+        # TODO: Add a set-title method to the server
+        # TODO: Add a set-icon method to the server
+        # TODO: Stylesheet
+
         template = self._templates.get_template('index.html')
-        content = template.render(SERVER_URL=f'ws://{self._host}:{self._port}/ws')
+
+        # Create the script for the libraries
+        # React must be loaded before react-dom
+        libs = []
+        for lib in os.listdir(os.path.join(self._static, 'libs'))[::-1]:
+            if lib.endswith('.js'):
+                libs.append(f'<script src="static/libs/{lib}"></script>')
+
+        development = """<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">\n"""
+        development += """\t<meta http-equiv="Pragma" content="no-cache">\n"""
+        development += """\t<meta http-equiv="Expires" content="0">"""
+
+        content = template.render(
+            TITLE='ViaVai',
+            LIBRARIES='\n\t'.join(libs),
+            DEVELOPMENT=development,
+            SERVER_URL=f'ws://{self._host}:{self._port}/ws'
+        )
+
         return HTMLResponse(content)
     
     async def get_bundle(self, request: Request):
