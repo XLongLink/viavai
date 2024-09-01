@@ -12,18 +12,11 @@ class Server:
     """Handle the server logic for all the users of the app"""
     
     def __init__(self, app: App):
-        """Initialize the server with the app instance
-        - If the app is a class instance, than the applications is a local application 
-        --> One user and open in a window
-        - If the app is a class definition, than the application is a web application 
-        --> Multiple users
-        """
-        self._host = 'localhost'
-        self._port = 8000
+        """Initialize the server with the app instance"""
 
-        # import webview
-        # webview.create_window('Hello world', 'https://pywebview.flowrl.com/')
-        # webview.start()
+        self._host = None
+        self._port = None
+
         self._api = FastAPI()
         self._manager = ConnectionManager(app)
 
@@ -41,12 +34,13 @@ class Server:
         # TODO: Add a route for the components
         # TODO: Add a route for the plots
         # TODO: Add a route for the maps
-        # TODO: Add a route the libraries
+        # TODO: Add a 404 route
 
         # Registe the websocket endpoint
         self._api.websocket('/ws')(self.websocket_endpoint)
 
     async def get_index(self, request: Request):
+        """Render the index.html file, with the right data injected"""
         # TODO: Add a set-title method to the server
         # TODO: Add a set-icon method to the server
         # TODO: Stylesheet
@@ -74,16 +68,17 @@ class Server:
         return HTMLResponse(content)
     
     async def get_bundle(self, request: Request):
+        """Return the bundle.js file - Contains the main React logic"""
         dir_current = os.path.dirname(os.path.abspath(__file__))
         file_path = os.path.join(dir_current, 'static', 'bundle.js')
         return FileResponse(path=file_path, media_type='application/javascript')
     
     async def get_library(self, request: Request, library: str):
+        """Return a specific library"""
         dir_current = os.path.dirname(os.path.abspath(__file__))
         file_path = os.path.join(dir_current, 'static', 'libs', library)
         return FileResponse(path=file_path, media_type='application/javascript')
                             
-
     async def websocket_endpoint(self, websocket: WebSocket, token: str | None = Query(None)):
         conn_id = await self._manager.connect(websocket, token=token)
 
