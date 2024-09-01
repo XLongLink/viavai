@@ -6,4 +6,4 @@ export default function Test() {
     )
 };
 
-window.test = Test;
+window["ui/test"] = Test;

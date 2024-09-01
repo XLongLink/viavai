@@ -13,7 +13,7 @@ export const WebSocketProvider = ({ children }) => {
         const TOKEN = "1234"
         console.log('Connecting to WebSocket...');
 
-        const socket = new WebSocket(`${window.SERVER_URL}?token=${TOKEN}`);
+        const socket = new WebSocket(`ws://${window.SERVER}/ws?token=${TOKEN}`);
         socketRef.current = socket;
 
         socket.addEventListener('open', () => {

@@ -1,4 +1,4 @@
 from viavai import App, Server
 
-server = Server(App)
+server = Server(App, development=True)
 server.run()

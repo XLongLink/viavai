@@ -1,6 +1,6 @@
 import os
 import uvicorn
-import datetime
+from datetime import datetime
 from fastapi import FastAPI, Request, Query
 from fastapi.responses import HTMLResponse, FileResponse
 from fastapi.websockets import WebSocket, WebSocketDisconnect
@@ -13,11 +13,12 @@ from .manager import ConnectionManager
 class Server:
     """Handle the server logic for all the users of the app"""
     
-    def __init__(self, app: App):
+    def __init__(self, app: App, *, development: bool = False):
         """Initialize the server with the app instance"""
 
         self._host = None
         self._port = None
+        self._dev = development
 
         self._api = FastAPI()
         self._manager = ConnectionManager(app)
@@ -65,8 +66,8 @@ class Server:
         content = template.render(
             TITLE='ViaVai',
             LIBRARIES='\n\t'.join(libs),
-            SERVER=f'{self._host}:{self._port}', # ws://{}/ws
-            CACHE_BUST=datetime.datetime.now().timestamp()
+            SERVER=f'{self._host}:{self._port}',
+            CACHE=datetime.now().timestamp() if self._dev else 0
         )
 
         return HTMLResponse(content)

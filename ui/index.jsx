@@ -1,9 +1,10 @@
 import React, { useState, useEffect, Suspense } from 'react';
 import ReactDOM from 'react-dom';
-import Dynamic from './Dynamic';
+import { WebSocketProvider } from './providers/websocket';
+import Loader from './Loader';
+
 
 const App = () => {
-    const [count, setCount] = useState(0);
     const [componentName, setComponentName] = useState(null);
 
     useEffect(() => {
@@ -21,19 +22,18 @@ const App = () => {
 
         const timeoutId = setTimeout(fetchComponent, 5000);
 
-        return () => clearTimeout(timeoutId); // Cleanup to avoid memory leaks
+        return () => clearTimeout(timeoutId);
     }, []);
 
     return (
-        <div>
-            <h1>Hello, React!</h1>
-            <p>This is a simple React app.</p>
-            <p>Count: {count}</p>
-            <button onClick={() => setCount(count + 1)}>Increment</button>
-            <Suspense fallback={<p>Loading...</p>}>
-                {componentName && <Dynamic componentName={componentName} />}
-            </Suspense>
-        </div>
+        <>
+            I am the main app
+            <WebSocketProvider>
+                {componentName && <Loader type="ui" component={componentName} />}
+                {componentName && <Loader type="ui" component={componentName} />}
+                {componentName && <Loader type="ui" component={componentName} />}
+            </WebSocketProvider>
+        </>
     );
 };
 

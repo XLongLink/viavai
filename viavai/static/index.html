@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{TITLE}}</title>
+    <title> {{TITLE}} </title>
     {{ LIBRARIES }}
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
@@ -15,8 +15,9 @@
     <div id="root"></div>
     <script>
         window.SERVER = '{{ SERVER }}';
+        window.CACHE = '{{ CACHE }}';
     </script>
-    <script src="static/bundle.js?v={{ CACHE_BUST }}"></script>
+    <script src="static/bundle.js?v={{ CACHE }}"></script>
 </body>
 
 </html>
