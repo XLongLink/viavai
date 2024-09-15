@@ -33,6 +33,7 @@ class Server:
         # Register routes and handlers
         self._api.get('/')(self.get_index)
         self._api.get('/static/bundle.js')(self.get_bundle)
+        self._api.get('/static/tailwind.css')(self.get_tailwind)
         self._api.get('/static/libs/{library}')(self.get_library)
         self._api.get('/static/ui/{component}')(self.get_ui)
         self._api.get('/get-component')(self.get_component)
@@ -77,6 +78,12 @@ class Server:
         dir_current = os.path.dirname(os.path.abspath(__file__))
         file_path = os.path.join(dir_current, 'static', 'bundle.js')
         return FileResponse(path=file_path, media_type='application/javascript')
+
+    async def get_tailwind(self, request: Request):
+        """Return the tailwind.css file - Contains the tailwindcss styles"""
+        dir_current = os.path.dirname(os.path.abspath(__file__))
+        file_path = os.path.join(dir_current, 'static', 'tailwind.css')
+        return FileResponse(path=file_path, media_type='text/css')
     
     async def get_library(self, request: Request, library: str):
         """Return a specific library"""
@@ -93,9 +100,6 @@ class Server:
     async def websocket_endpoint(self, websocket: WebSocket, token: str | None = Query(None)):
         conn_id = await self._manager.connect(websocket, token=token)
 
-        print(f'New connection: {conn_id}')
-
-        # Keep the connection alive and handle incoming messages
         try:
             while True:
                 data = await websocket.receive_text()

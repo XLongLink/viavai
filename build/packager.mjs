@@ -46,8 +46,8 @@ export class WebpackPackager {
                             loader: 'babel-loader',
                             options: {
                                 presets: [
-                                    '@babel/preset-env',  // Transpile modern JavaScript
-                                    '@babel/preset-react' // Transpile React JSX
+                                    '@babel/preset-env',
+                                    '@babel/preset-react'
                                 ],
                             },
                         },

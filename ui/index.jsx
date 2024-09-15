@@ -27,10 +27,10 @@ const App = () => {
 
     return (
         <>
-            I am the main app
+            <h1 class="text-3xl font-bold underline">
+                Hello world!
+            </h1>
             <WebSocketProvider>
-                {componentName && <Loader type="ui" component={componentName} />}
-                {componentName && <Loader type="ui" component={componentName} />}
                 {componentName && <Loader type="ui" component={componentName} />}
             </WebSocketProvider>
         </>

@@ -10,7 +10,7 @@ function Loader({ type, component }) {
         return <></>;
     }
 
-    return <Component />;
+    return <Component> This is a test </Component>;
 };
 
 export default Loader;
