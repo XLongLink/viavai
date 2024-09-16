@@ -11,7 +11,12 @@ from .manager import ConnectionManager
 
 
 class Server:
-    """Handle the server logic for all the users of the app"""
+    """Each user that connect to the application, require the html, css and js files.
+    - index.html lin all the other files and the global variables are injected into it
+    - bundle.js contains the main React logic, handle the dynamic loading of the components
+    - tailwind.css contains all the styles for the application
+    - libs/<name> contains the libraries required by the application
+    """
     
     def __init__(self, app: App, *, development: bool = False):
         """Initialize the server with the app instance"""

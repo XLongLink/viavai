@@ -18,7 +18,7 @@ if __name__ == "__main__":
     script_to_run = "main.py"
     event_handler = MyHandler(script_to_run)
     observer = Observer()
-    observer.schedule(event_handler, path='./viavai', recursive=True)
+    observer.schedule(event_handler, path='../viavai', recursive=True)
     observer.start()
     try:
         while True:
