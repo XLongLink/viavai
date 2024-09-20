@@ -1,5 +1,5 @@
-import React, { useState, useEffect, Suspense } from 'react';
-import ReactDOM from 'react-dom';
+import React, { useState, useEffect } from 'react';
+import { createRoot } from 'react-dom/client';
 import { WebSocketProvider } from './providers/websocket';
 import Loader from './Loader';
 
@@ -9,6 +9,12 @@ const App = () => {
 
     useEffect(() => {
         const fetchComponent = async () => {
+
+            if (!window.SERVER) {
+                console.warn('SERVER environment variable not set');
+                return;
+            }
+
             try {
                 const response = await fetch(`http://${window.SERVER}/get-component`);
                 const data = await response.json();
@@ -27,7 +33,7 @@ const App = () => {
 
     return (
         <>
-            <h1 class="text-3xl font-bold underline">
+            <h1 className="text-3xl font-bold underline">
                 Hello world!
             </h1>
             <WebSocketProvider>
@@ -37,4 +43,7 @@ const App = () => {
     );
 };
 
-ReactDOM.render(<App />, document.getElementById('root'));
+
+const container = document.getElementById('root');
+const root = createRoot(container);
+root.render(<App />);

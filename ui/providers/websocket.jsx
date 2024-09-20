@@ -11,7 +11,11 @@ export const WebSocketProvider = ({ children }) => {
 
     useEffect(() => {
         const TOKEN = "1234"
-        console.log('Connecting to WebSocket...');
+
+        if (!window.SERVER) {
+            console.warn('SERVER environment variable not set');
+            return;
+        }
 
         const socket = new WebSocket(`ws://${window.SERVER}/ws?token=${TOKEN}`);
         socketRef.current = socket;
