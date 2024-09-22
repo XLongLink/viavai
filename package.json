@@ -1,13 +1,14 @@
 {
     "scripts": {
+        "dev": "vite",
         "build": "node .\\build\\.index.mjs && npx postcss ./ui/global.css -o viavai/static/tailwind.css"
     },
     "dependencies": {
-        "@vitejs/plugin-react": "^4.3.1",
         "react": "^18.3.1",
         "react-dom": "^18.3.1"
     },
     "devDependencies": {
+        "@vitejs/plugin-react": "^4.3.1",
         "@babel/core": "^7.25.2",
         "@babel/preset-env": "^7.25.4",
         "@babel/preset-react": "^7.24.7",

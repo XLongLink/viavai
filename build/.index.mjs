@@ -24,5 +24,5 @@ new WebpackPackager('ui/index.jsx', 'viavai/static/bundle.js').pack();
 
 
 // Compile the components
-new WebpackPackager('ui/core/Test.jsx', 'viavai/static/ui/test.js').pack();
+// new WebpackPackager('ui/core/Test.jsx', 'viavai/static/ui/test.js').pack();
 // TODO: Add more components here

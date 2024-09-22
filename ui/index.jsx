@@ -1,49 +1,62 @@
-import React, { useState, useEffect } from 'react';
+import React, { useMemo } from 'react';
 import { createRoot } from 'react-dom/client';
 import { WebSocketProvider } from './providers/websocket';
-import Loader from './Loader';
+import { useComponent } from './hooks/useComponents';
+import { useStructure } from './hooks/useStructure';
+
+/* 
+    Generic component loader:
+    - Load the right component based on the uid
+    - Pass the props to the component
+    - Memoize the entire rendered output
+*/
+function Loader({ uid, props }) {
+    const Component = useComponent(uid);
+
+    // Memoize the entire rendered output
+    const renderedComponent = useMemo(() => {
+        if (!Component) return null;
+
+        return <Component {...props} />;
+    }, [Component, props]);
+
+    return renderedComponent;
+};
 
 
-const App = () => {
-    const [componentName, setComponentName] = useState(null);
 
-    useEffect(() => {
-        const fetchComponent = async () => {
+/* 
+    Structure class
+*/
+function Structure() {
+    const { nav, aside, main, footer } = useStructure();
 
-            if (!window.SERVER) {
-                console.warn('SERVER environment variable not set');
-                return;
-            }
-
-            try {
-                const response = await fetch(`http://${window.SERVER}/get-component`);
-                const data = await response.json();
-                setComponentName(data.component);
-            } catch (error) {
-                console.error('Error fetching component data:', error);
-            }
-        };
-
-        fetchComponent();
-
-        const timeoutId = setTimeout(fetchComponent, 5000);
-
-        return () => clearTimeout(timeoutId);
-    }, []);
+    // {componentName && <Loader type="ui" component={componentName} />}
 
     return (
-        <>
-            <h1 className="text-3xl font-bold underline">
-                Hello world!
-            </h1>
-            <WebSocketProvider>
-                {componentName && <Loader type="ui" component={componentName} />}
-            </WebSocketProvider>
-        </>
+        <div>
+            {nav && <nav />}
+            {aside && <aside />}
+            {main && <main />}
+            {footer && <footer />}
+        </div>
+    );
+}
+
+
+/* 
+    Main app
+*/
+function App() {
+    return (
+        <WebSocketProvider>
+            <Structure />
+        </WebSocketProvider>
     );
 };
 
 
+/* Add the application to the root */
 const container = document.getElementById('root');
 const root = createRoot(container);
 root.render(<App />);

@@ -1,58 +1,45 @@
-import React, { createContext, useContext, useState, useEffect, useRef } from 'react';
+import React, { createContext, useMemo, useEffect, useState, useRef } from 'react';
 
 
+/* 
+    This context wrap the entire application:
+    - Ensure that the WebSocket connection is established
+    - Make the WebSocket connection available to all the components
+*/
 const WebSocketContext = createContext();
 
 
-export const WebSocketProvider = ({ children }) => {
-    // The json keeps track of the json of the current page
-    const [json, setJson] = useState({});
-    const socketRef = useRef(null);
+function WebSocketProvider({ children }) {
+    const [socket, setSocket] = useState(null);
 
     useEffect(() => {
-        const TOKEN = "1234"
+        const { SERVER, TOKEN } = window;
 
         if (!window.SERVER) {
             console.warn('SERVER environment variable not set');
             return;
         }
 
-        const socket = new WebSocket(`ws://${window.SERVER}/ws?token=${TOKEN}`);
-        socketRef.current = socket;
+        const protocol = window.location.protocol === 'https:' ? 'wss://' : 'ws://';
+        const socketUrl = `${protocol}${SERVER}/ws?token=${TOKEN}`;
 
-        socket.addEventListener('open', () => {
-            socket.send('Hello Server!');
-        });
+        // Open the WebSocket connection and store it in the state
+        const ws = new WebSocket(socketUrl);
+        setSocket(ws);
 
-        socket.addEventListener('error', () => {
-            console.error('WebSocket error, using fallback data.');
-        });
-
-        socket.addEventListener('message', (event) => {
-            const data = JSON.parse(event.data);
-            setJson(data.json);
-        });
-
+        // Cleanup
         return () => {
-            socket.close();
+            if (ws.readyState === WebSocket.OPEN || ws.readyState === WebSocket.CONNECTING) {
+                ws.close();
+            }
         };
     }, []);
 
-    const update = ({ id, newData }) => {
-        const obj = {}
-        obj[id] = newData;
-        if (socketRef.current && socketRef.current.readyState === WebSocket.OPEN) {
-            socketRef.current.send(JSON.stringify(obj));
-        }
-    };
-
     return (
-        <WebSocketContext.Provider value={{ json, update }}>
+        <WebSocketContext.Provider value={{ socket }}>
             {children}
         </WebSocketContext.Provider>
     );
 };
 
-export const useWebSocket = () => {
-    return useContext(WebSocketContext);
-};
+export { WebSocketProvider, WebSocketContext };

@@ -1,44 +1,49 @@
 import { useState, useEffect, useCallback } from 'react';
 
-// Global object to track loading state
-const scriptLoaders = {};
 
-const useComponent = (path) => {
-    const [folder, file] = path.split('/');
+/* 
+    Handle the loading of components:
+    - Ensure that the script is only loaded once
+    - Prevent the script from loading twince at the same time
+
+    Each component has an unique id
+*/
+
+
+const globalLoader = {};
+
+const useComponent = (uid) => {
     const [Component, setComponent] = useState(null);
 
     const loadComponentScript = useCallback(() => {
-        if (window[path]) {
-            setComponent(() => window[path]);
+        if (window[uid]) {
+            setComponent(() => window[uid]);
             return;
         }
 
         // Check if the script is already loading
-        if (scriptLoaders[path]) {
-            scriptLoaders[path].then((LoadedComponent) => {
+        if (globalLoader[uid]) {
+            globalLoader[uid].then((LoadedComponent) => {
                 setComponent(() => LoadedComponent);
             });
             return;
         }
 
-        console.log('Loading script:', path);
-        const scriptPath = `static/${folder}/${file}.js?v=${window.CACHE}`;
+        const scriptPath = `static/components/${uid}.js?v=${window.CACHE}`;
 
         // Create a new promise to track the script loading
-        scriptLoaders[path] = new Promise((resolve, reject) => {
+        globalLoader[uid] = new Promise((resolve, reject) => {
             const script = document.createElement('script');
             script.src = scriptPath;
             script.async = true;
 
             script.onload = () => {
-                const LoadedComponent = window[path];
+                const LoadedComponent = window[uid];
                 setComponent(() => LoadedComponent);
                 resolve(LoadedComponent);
-                console.log('Script loaded:', LoadedComponent);
             };
 
             script.onerror = () => {
-                console.error(`Error loading script: ${scriptPath}`);
                 reject(new Error(`Error loading script: ${scriptPath}`));
             };
 
@@ -46,7 +51,7 @@ const useComponent = (path) => {
         });
 
         // Handle the case where the script finishes loading before the current component instance is rendered
-        scriptLoaders[path].then((LoadedComponent) => {
+        globalLoader[uid].then((LoadedComponent) => {
             setComponent(() => LoadedComponent);
         }).catch(error => {
             console.error(error);
@@ -61,4 +66,4 @@ const useComponent = (path) => {
     return Component;
 };
 
-export default useComponent;
+export { useComponent };
