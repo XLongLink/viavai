@@ -31,9 +31,18 @@ function WebSocketProvider({ children }) {
             console.error('WebSocket error:', error);
         };
 
-        // ws.onopen = () => {
-        //     console.log('WebSocket connection established');
-        // };
+        ws.onopen = () => {
+            console.log('WebSocket connection established');
+        };
+
+        // send back the message to the server
+        ws.onmessage = (event) => {
+            const message = JSON.parse(event.data);
+            console.log('WebSocket message received:', message);
+
+            // Send a 'ping' message back to the server
+            ws.send(JSON.stringify({ type: 'ping' }));
+        };
 
         // Cleanup
         return () => {

@@ -1,10 +1,10 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 import WS from 'jest-websocket-mock';
-import App from '../../app';
+import App from '../app';
 
 
-describe('WebSocketProvider', () => {
+describe('WebSockets', () => {
     let server;
     const URL = 'localhost:1234';
 
@@ -20,10 +20,16 @@ describe('WebSocketProvider', () => {
         delete window.SERVER;
     });
 
-
-    it('establishes a WebSocket connection on mount', async () => {
+    it('Basic - Test the connection', async () => {
         render(<App />);
-
         await server.connected;
     });
-});
+
+    it('Basic - Test the connection and send a message', async () => {
+        render(<App />);
+        await server.connected;
+
+        server.send(JSON.stringify({ type: 'ping' }));
+        expect(server).toReceiveMessage('ping');
+    });
+});    
