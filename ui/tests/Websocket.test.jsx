@@ -29,7 +29,7 @@ describe('WebSockets', () => {
         render(<App />);
         await server.connected;
 
-        server.send(JSON.stringify({ type: 'ping' }));
+        server.send(JSON.stringify({}));
         expect(server).toReceiveMessage('ping');
     });
 });    

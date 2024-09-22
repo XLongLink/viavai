@@ -23,6 +23,32 @@ function Loader({ uid, props }) {
 };
 
 
+function Dynamic({ children }) {
+
+    if (children === undefined) return null;
+
+    console.log("Children: ", children);
+
+    return (
+        <>
+            {
+                children.map((child, index) => {
+                    const uid = Object.keys(child)[0];
+                    const props = child[uid];
+
+                    console.log("UID: ", uid);
+                    console.log("Props: ", props);
+                    if (props.children) {
+                        return <Dynamic key={index}>{props.children}</Dynamic>;
+                    }
+
+                    return (<Loader key={index} uid={uid} props={props} />);
+                })
+            }
+        </>
+    )
+}
+
 
 /* 
     Structure class
@@ -30,15 +56,30 @@ function Loader({ uid, props }) {
 function Structure() {
     const { nav, aside, main, footer } = useStructure();
 
-    // {componentName && <Loader type="ui" component={componentName} />}
+    const test = [
+        {
+            "vHLayout": {
+                "children": [
+                    {
+                        "vButton": {
+                            "text": "this is a text"
+                        }
+                    }
+                ]
+            }
+        },
+
+    ]
 
     return (
-        <div>
-            {nav && <nav />}
-            {aside && <aside />}
-            {main && <main />}
-            {footer && <footer />}
-        </div>
+        <>
+            {nav.length > 0 && <nav />}
+            {aside.length > 0 && <aside />}
+            {main.length > 0 && <main />}
+            {footer.length > 0 && <footer />}
+
+            <Dynamic>{test}</Dynamic>
+        </>
     );
 }
 

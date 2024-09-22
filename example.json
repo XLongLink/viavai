@@ -1,6 +1,8 @@
 {
-    "nav": "",
-    "aside": "",
-    "main": "",
-    "footer": ""
+    "nav": "this has a special structure -> Menu + Sub Menu",
+    "aside": "this has a special structure -> Menu + Sub Menu",
+    "main": [
+        {}
+    ],
+    "footer": "this has a special structure -> Links? + Social Media"
 }

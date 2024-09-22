@@ -57,7 +57,7 @@ const useComponent = (uid) => {
             console.error(error);
         });
 
-    }, [path]);
+    }, [uid]);
 
     useEffect(() => {
         loadComponentScript();

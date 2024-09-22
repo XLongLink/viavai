@@ -13,9 +13,19 @@ import { useWebSocket } from './useWebSocket';
 
 const useStructure = () => {
     const { socket } = useWebSocket();
+    const [nav, setNav] = useState([]);
+    const [aside, setAside] = useState([]);
+    const [main, setMain] = useState([]);
+    const [footer, setFooter] = useState([]);
+
 
     useEffect(() => {
+        if (!window.SERVER) {
+            setMain([])
+        }
+
         if (!socket) return;
+
 
         socket.onmessage = (event) => {
             console.log("Message received: ", event.data);
@@ -23,10 +33,6 @@ const useStructure = () => {
 
     }, [socket]);
 
-    const [nav, setNav] = useState(null);
-    const [aside, setAside] = useState(null);
-    const [main, setMain] = useState(null);
-    const [footer, setFooter] = useState(null);
 
     return { nav, aside, main, footer };
 };
