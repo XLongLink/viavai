@@ -1,7 +1,8 @@
 {
     "scripts": {
         "dev": "vite",
-        "build": "node .\\build\\.index.mjs && npx postcss ./ui/global.css -o viavai/static/tailwind.css"
+        "build": "node .\\build\\.index.mjs && npx postcss ./ui/global.css -o viavai/static/tailwind.css",
+        "test": "npx jest ui/tests"
     },
     "dependencies": {
         "react": "^18.3.1",
