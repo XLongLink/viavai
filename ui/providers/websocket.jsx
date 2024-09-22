@@ -27,6 +27,14 @@ function WebSocketProvider({ children }) {
         const ws = new WebSocket(socketUrl);
         setSocket(ws);
 
+        ws.onerror = (error) => {
+            console.error('WebSocket error:', error);
+        };
+
+        // ws.onopen = () => {
+        //     console.log('WebSocket connection established');
+        // };
+
         // Cleanup
         return () => {
             if (ws.readyState === WebSocket.OPEN || ws.readyState === WebSocket.CONNECTING) {
