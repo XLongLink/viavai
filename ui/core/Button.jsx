@@ -1,10 +1,11 @@
 import React from "react"
 import { Slot } from "@radix-ui/react-slot"
 import { cva } from "class-variance-authority"
-
 import { cn } from "../utils/cn"
+
+
 const buttonVariants = cva(
-    "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
+    "w-full inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
     {
         variants: {
             variant: {
@@ -44,19 +45,19 @@ const Button = React.forwardRef(
         }
 
         return (
-            <Comp
-                className={cn(buttonVariants({ variant, size, className }))}
-                ref={ref}
-                {...props}
-            />
+            <div className="overflow-hidden" style={{ width: "10%" }}>
+                <Comp
+                    className={cn(buttonVariants({ variant, size, className }))}
+                    ref={ref}
+                    {...props}
+                />
+            </div>
         )
     }
 )
 
-Button.displayName = "Button"
+
 window["vButton"] = Button;
-
-
 export default Button
 
 

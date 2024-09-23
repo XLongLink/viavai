@@ -1,6 +1,7 @@
 function HLayout({ children }) {
+
     return (
-        <div className="h-layout">
+        <div className="h-layout flex w-full flex-nowrap gap-1">
             {children}
         </div>
     );

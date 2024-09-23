@@ -9,14 +9,14 @@ import { useStructure } from './hooks/useStructure';
     - Pass the props to the component
     - Memoize the entire rendered output
 */
-function Loader({ uid, props }) {
+function Loader({ uid, children, props }) {
     const Component = useComponent(uid);
 
     // Memoize the entire rendered output
     const renderedComponent = useMemo(() => {
         if (!Component) return null;
 
-        return <Component {...props} />;
+        return <Component {...props} >{children}</Component>;
     }, [Component, props]);
 
     return renderedComponent;
@@ -25,26 +25,26 @@ function Loader({ uid, props }) {
 
 function Dynamic({ children }) {
 
-    if (children === undefined) return null;
-
     console.log("Children: ", children);
+
+    if (!children || !Array.isArray(children)) return null;
 
     return (
         <>
-            {
-                children.map((child, index) => {
-                    const uid = Object.keys(child)[0];
-                    const props = child[uid];
+            {children.map((child, index) => {
+                const uid = Object.keys(child)[0];
+                const props = child[uid];
 
-                    console.log("UID: ", uid);
-                    console.log("Props: ", props);
-                    if (props.children) {
-                        return <Dynamic key={index}>{props.children}</Dynamic>;
-                    }
+                const { children: nestedChildren, ...rest } = props;
 
-                    return (<Loader key={index} uid={uid} props={props} />);
-                })
-            }
+                return (
+                    <Loader key={index} uid={uid} props={rest}>
+                        {nestedChildren && (
+                            <Dynamic>{nestedChildren}</Dynamic>
+                        )}
+                    </Loader>
+                );
+            })}
         </>
     )
 }
@@ -64,6 +64,26 @@ function Structure() {
                         "vButton": {
                             "text": "this is a text"
                         }
+                    },
+                    {
+                        "vButton": {
+                            "text": "this is a text"
+                        }
+                    },
+                    {
+                        "vButton": {
+                            "text": "this is a text"
+                        }
+                    },
+                    {
+                        "vButton": {
+                            "text": "this is a text"
+                        }
+                    },
+                    {
+                        "vInput": {
+                            "placeholder": "placeholder"
+                        }
                     }
                 ]
             }
@@ -72,14 +92,14 @@ function Structure() {
     ]
 
     return (
-        <>
+        <div className='flex m-1'>
             {nav.length > 0 && <nav />}
             {aside.length > 0 && <aside />}
             {main.length > 0 && <main />}
             {footer.length > 0 && <footer />}
 
             <Dynamic>{test}</Dynamic>
-        </>
+        </div>
     );
 }
 
