@@ -35,17 +35,21 @@ const buttonVariants = cva(
 
 const Button = React.forwardRef(
     (
-        { className, variant, size, asChild = false, text, ...props },
+        { className, variant, size, width, asChild = false, text, ...props },
         ref
     ) => {
         const Comp = asChild ? Slot : "button"
+
+        if (!width) {
+            width = 100
+        }
 
         if (text) {
             props.children = text
         }
 
         return (
-            <div className="overflow-hidden" style={{ width: "10%" }}>
+            <div className="overflow-hidden" style={{ width: `${width}%` }}>
                 <Comp
                     className={cn(buttonVariants({ variant, size, className }))}
                     ref={ref}

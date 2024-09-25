@@ -16,6 +16,7 @@ const useComponent = (uid) => {
     const [Component, setComponent] = useState(null);
 
     const loadComponentScript = useCallback(() => {
+
         if (window[uid]) {
             setComponent(() => window[uid]);
             return;

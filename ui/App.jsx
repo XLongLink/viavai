@@ -58,33 +58,68 @@ function Structure() {
 
     const test = [
         {
-            "vHLayout": {
+            "vVLayout": {
                 "children": [
                     {
-                        "vButton": {
-                            "text": "this is a text"
+                        "vHLayout": {
+                            "children": [
+                                {
+                                    "vButton": {
+                                        "text": "this is a text",
+                                        "width": 100
+                                    }
+                                },
+                                {
+                                    "vButton": {
+                                        "text": "this is a text",
+                                        "width": 100
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "vHLayout": {
+                            "children": [
+                                {
+                                    "vSpace": {
+                                        "width": 100
+                                    }
+                                },
+                                {
+                                    "vText": {
+                                        "text": "This is a text"
+                                    }
+                                }
+                            ]
                         }
                     },
                     {
                         "vButton": {
-                            "text": "this is a text"
+                            "text": "This is a text",
+                            "width": 100
                         }
                     },
+
                     {
-                        "vButton": {
-                            "text": "this is a text"
-                        }
-                    },
-                    {
-                        "vButton": {
-                            "text": "this is a text"
-                        }
-                    },
-                    {
-                        "vInput": {
-                            "placeholder": "placeholder"
+                        "vHLayout": {
+                            "children": [
+                                {
+                                    "vButton": {
+                                        "text": "this is a text",
+                                        "width": 25
+                                    }
+                                },
+                                {
+                                    "vInput": {
+                                        "placeholder": "placeholder",
+                                        "width": 75
+                                    }
+                                }
+                            ]
                         }
                     }
+
                 ]
             }
         },

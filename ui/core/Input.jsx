@@ -3,9 +3,13 @@ import { cn } from "../utils/cn"
 
 
 const Input = React.forwardRef(
-    ({ className, type, ...props }, ref) => {
+    ({ className, width, type, ...props }, ref) => {
+        if (!width) {
+            width = 100
+        }
+
         return (
-            <div className="flex-shrink-0 flex-grow overflow-hidden">
+            <div className="overflow-hidden" style={{ width: `${width}%` }}>
                 <input
                     type={type}
                     className={cn(
