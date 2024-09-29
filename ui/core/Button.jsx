@@ -1,4 +1,4 @@
-import React from "react"
+import { forwardRef } from "react"
 import { Slot } from "@radix-ui/react-slot"
 import { cva } from "class-variance-authority"
 import { cn } from "../utils/cn"
@@ -33,7 +33,7 @@ const buttonVariants = cva(
     }
 )
 
-const Button = React.forwardRef(
+const Button = forwardRef(
     (
         { className, variant, size, width, asChild = false, text, ...props },
         ref

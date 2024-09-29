@@ -1,4 +1,7 @@
-class Button:
+from ..component import Component
+
+
+class Button(Component):
     """
     https://ui.shadcn.com/docs/components/button
     
@@ -23,3 +26,9 @@ class Button:
     - Ghost
     - Link
     """
+
+    def __init__(self):
+        ...
+
+    def render(self) -> dict:
+        ...
