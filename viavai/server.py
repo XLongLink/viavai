@@ -98,6 +98,8 @@ class Server:
 
     async def get_ui(self, request: Request, component: str):
         """Return a specific static file"""
+        assert component.startswith("v"), "The component is not a viavai component"
+        component = component[1:]
         dir_current = os.path.dirname(os.path.abspath(__file__))
         file_path = os.path.join(dir_current, 'static', 'ui', component)
         return FileResponse(path=file_path, media_type='application/javascript')

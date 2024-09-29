@@ -3,6 +3,8 @@ import { WebSocketProvider } from './providers/websocket';
 import { useComponent } from './hooks/useComponents';
 import { useStructure } from './hooks/useStructure';
 
+import test from "../tests/example.json";
+
 /* 
     Generic component loader:
     - Load the right component based on the uid
@@ -24,8 +26,6 @@ function Loader({ uid, children, props }) {
 
 
 function Dynamic({ children }) {
-
-    console.log("Children: ", children);
 
     if (!children || !Array.isArray(children)) return null;
 
@@ -56,76 +56,6 @@ function Dynamic({ children }) {
 function Structure() {
     const { nav, aside, main, footer } = useStructure();
 
-    const test = [
-        {
-            "vVLayout": {
-                "children": [
-                    {
-                        "vHLayout": {
-                            "children": [
-                                {
-                                    "vButton": {
-                                        "text": "this is a text",
-                                        "width": 100
-                                    }
-                                },
-                                {
-                                    "vButton": {
-                                        "text": "this is a text",
-                                        "width": 100
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    {
-                        "vHLayout": {
-                            "children": [
-                                {
-                                    "vSpace": {
-                                        "width": 100
-                                    }
-                                },
-                                {
-                                    "vText": {
-                                        "text": "This is a text"
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    {
-                        "vButton": {
-                            "text": "This is a text",
-                            "width": 100
-                        }
-                    },
-
-                    {
-                        "vHLayout": {
-                            "children": [
-                                {
-                                    "vButton": {
-                                        "text": "this is a text",
-                                        "width": 25
-                                    }
-                                },
-                                {
-                                    "vInput": {
-                                        "placeholder": "placeholder",
-                                        "width": 75
-                                    }
-                                }
-                            ]
-                        }
-                    }
-
-                ]
-            }
-        },
-
-    ]
-
     return (
         <div className='flex m-1'>
             {nav.length > 0 && <nav />}
@@ -133,7 +63,7 @@ function Structure() {
             {main.length > 0 && <main />}
             {footer.length > 0 && <footer />}
 
-            <Dynamic>{test}</Dynamic>
+            <Dynamic>{main}</Dynamic>
         </div>
     );
 }

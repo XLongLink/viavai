@@ -1,0 +1,70 @@
+{
+    "aside": null,
+    "footer": null,
+    "main": [
+        {
+            "vVLayout": {
+                "children": [
+                    {
+                        "vHLayout": {
+                            "children": [
+                                {
+                                    "vButton": {
+                                        "text": "this is a text",
+                                        "width": 50
+                                    }
+                                },
+                                {
+                                    "vButton": {
+                                        "text": "this is a text",
+                                        "width": 100
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "vHLayout": {
+                            "children": [
+                                {
+                                    "vSpace": {
+                                        "width": 100
+                                    }
+                                },
+                                {
+                                    "vText": {
+                                        "text": "This is a text"
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "vButton": {
+                            "text": "This is a text",
+                            "width": 100
+                        }
+                    },
+                    {
+                        "vHLayout": {
+                            "children": [
+                                {
+                                    "vButton": {
+                                        "text": "this is a text",
+                                        "width": 25
+                                    }
+                                },
+                                {
+                                    "vInput": {
+                                        "placeholder": "placeholder",
+                                        "width": 75
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+        }
+    ]
+}

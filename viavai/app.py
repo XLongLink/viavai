@@ -1,12 +1,14 @@
+import json
+
 class App:
     """"""
 
     def _render(self) -> dict:
         """Render the app, return the Json structure"""
-        return {
-            "json": "test"
-        }
-
+        with open('../tests/example.json') as f:
+            data = json.load(f)
+        return data
+    
     def _events(self, message):
         """Handle the forwarding of the events"""
         print(message)     

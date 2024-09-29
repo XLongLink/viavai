@@ -297,3 +297,15 @@ Under `ui/index.jsx` is located the code for the dynamic react render. Is config
 Each component has to work as a standalone element, so that can be created with a fix set of parameters and events triggers. The parameters should not be states as they cannot be updated from the server. The events are triggered from the server and the client has to handle them.
 
 The state of the frontend is always synced with the server, this is done using a nested json structure. Every time a component is updated, the server sends the new state of the component and the client updates the component. We give to each component an unique id so that the server can locate any changes in the component and apply the changes.
+
+
+```json
+{
+    "nav": "this has a special structure -> Menu + Sub Menu",
+    "aside": "this has a special structure -> Menu + Sub Menu",
+    "main": [
+        {}
+    ],
+    "footer": "this has a special structure -> Links? + Social Media"
+}
+```

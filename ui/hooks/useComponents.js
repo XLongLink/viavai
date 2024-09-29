@@ -30,11 +30,12 @@ const useComponent = (uid) => {
             return;
         }
 
-        const scriptPath = `static/components/${uid}.js?v=${window.CACHE}`;
+        const scriptPath = `/static/ui/${uid}.js?v=${window.CACHE}`;
 
         // Create a new promise to track the script loading
         globalLoader[uid] = new Promise((resolve, reject) => {
             const script = document.createElement('script');
+            console.log(scriptPath);
             script.src = scriptPath;
             script.async = true;
 

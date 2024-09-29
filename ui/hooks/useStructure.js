@@ -28,7 +28,12 @@ const useStructure = () => {
 
 
         socket.onmessage = (event) => {
-            console.log("Message received: ", event.data);
+            const { nav, aside, main, footer } = JSON.parse(event.data);
+
+            setNav(nav || []);
+            setAside(aside || []);
+            setMain(main || []);
+            setFooter(footer || []);
         };
 
     }, [socket]);
