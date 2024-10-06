@@ -28,6 +28,7 @@ const useStructure = () => {
 
 
         socket.onmessage = (event) => {
+            console.log('WebSocket message received:', event.data);
             const { nav, aside, main, footer } = JSON.parse(event.data);
 
             setNav(nav || []);

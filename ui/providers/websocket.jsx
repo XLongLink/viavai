@@ -25,6 +25,7 @@ function WebSocketProvider({ children }) {
 
         // Open the WebSocket connection and store it in the state
         const ws = new WebSocket(socketUrl);
+        window.ws = ws;
         setSocket(ws);
 
         ws.onerror = (error) => {
@@ -33,15 +34,6 @@ function WebSocketProvider({ children }) {
 
         ws.onopen = () => {
             console.log('WebSocket connection established');
-        };
-
-        // send back the message to the server
-        ws.onmessage = (event) => {
-            const message = JSON.parse(event.data);
-            console.log('WebSocket message received:', message);
-
-            // Send a 'ping' message back to the server
-            ws.send(JSON.stringify({ type: 'ping' }));
         };
 
         // Cleanup

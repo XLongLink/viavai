@@ -11,6 +11,9 @@ class MyHandler(FileSystemEventHandler):
         self.process = subprocess.Popen([sys.executable, self.script])
 
     def on_any_event(self, event):
+        # Ignore events related to the __pycache__ directory
+        if '__pycache__' in event.src_path:
+            return
         self.process.terminate()
         self.process = subprocess.Popen([sys.executable, self.script])
 

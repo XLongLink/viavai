@@ -27,8 +27,20 @@ class Button(Component):
     - Link
     """
 
-    def __init__(self):
-        ...
+    def __init__(self, text: str):
+        self._text = text
+        self._on_click = None
 
     def render(self) -> dict:
-        ...
+        return  { 
+            "vButton": {
+                "id": self._id,
+                "text": self._text,
+            }
+        }
+    
+    def event(self, message: dict) -> None:
+        if not message["id"] == self._id:
+            return
+        if message["type"] == "click":
+            self._on_click()

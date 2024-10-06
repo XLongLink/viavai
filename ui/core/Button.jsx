@@ -1,5 +1,3 @@
-import { forwardRef } from "react"
-import { Slot } from "@radix-ui/react-slot"
 import { cva } from "class-variance-authority"
 import { cn } from "../utils/cn"
 
@@ -33,32 +31,31 @@ const buttonVariants = cva(
     }
 )
 
-const Button = forwardRef(
-    (
-        { className, variant, size, width, asChild = false, text, ...props },
-        ref
-    ) => {
-        const Comp = asChild ? Slot : "button"
-
-        if (!width) {
-            width = 100
-        }
-
-        if (text) {
-            props.children = text
-        }
-
-        return (
-            <div className="overflow-hidden" style={{ width: `${width}%` }}>
-                <Comp
-                    className={cn(buttonVariants({ variant, size, className }))}
-                    ref={ref}
-                    {...props}
-                />
-            </div>
-        )
+function Button({ className, variant, size, width, text, ...props }) {
+    if (!width) {
+        width = 100
     }
-)
+
+    if (text) {
+        props.children = text
+    }
+
+    const update = () => {
+        const { ws } = window
+        ws.send(JSON.stringify({ type: "click", id: props.id }))
+    }
+
+
+    return (
+        <div className="overflow-hidden" style={{ width: `${width}%` }}>
+            <button
+                className={cn(buttonVariants({ variant, size, className }))}
+                onClick={update}
+                {...props}
+            />
+        </div>
+    )
+}
 
 
 window["vButton"] = Button;

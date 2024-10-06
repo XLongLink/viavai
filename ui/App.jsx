@@ -3,8 +3,6 @@ import { WebSocketProvider } from './providers/websocket';
 import { useComponent } from './hooks/useComponents';
 import { useStructure } from './hooks/useStructure';
 
-import test from "../tests/example.json";
-
 /* 
     Generic component loader:
     - Load the right component based on the uid

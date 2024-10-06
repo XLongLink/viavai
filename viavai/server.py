@@ -20,7 +20,6 @@ class Server:
     
     def __init__(self, app: App, *, development: bool = False):
         """Initialize the server with the app instance"""
-
         self._host = None
         self._port = None
         self._dev = development

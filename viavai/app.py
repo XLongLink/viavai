@@ -9,14 +9,13 @@ class App:
 
     def render(self) -> dict:
         """Render the app, return the Json structure"""
-        print(self._pages)
+        obj = {}
         if self._pages:
-            return self._pages[0].render()
-
-        with open('../tests/example.json') as f:
-            data = json.load(f)
-        return data
+            obj["main"] = self._pages[0].render()
+        return obj
     
     def _events(self, message):
-        """Handle the forwarding of the events"""  
+        """Handle the forwarding of the events"""
+        page = self._pages[0]
+        page.event(message)
         return self.render()   

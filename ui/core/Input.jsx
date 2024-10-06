@@ -1,7 +1,7 @@
 import { cn } from "../utils/cn"
+import { forwardRef } from "react"
 
-
-const Input = React.forwardRef(
+const Input = forwardRef(
     ({ className, width, type, ...props }, ref) => {
         if (!width) {
             width = 100

@@ -30,15 +30,12 @@ class ConnectionManager:
 
         # Initialize the App for the current connection
         # The initialization is done on a separate thread in case of heavy computation
-        print("INITIALIZING APP")
-        print(self._app)
         app = await asyncio.to_thread(lambda: self._app())
         self._apps[connection_id] = app
 
         # Send to the user the first render of the app
         # NOTE: The render should be fast and not block the event loop
         obj = self._apps[connection_id].render()
-        print(obj)
         await websocket.send_text(json.dumps(obj))
 
         # Save the connection and return the ID
@@ -63,6 +60,7 @@ class ConnectionManager:
         # An update to the app state
         # A user interaction
         def handle_message(message: str, app: App):
+            message = json.loads(message)
             return app._events(message)
 
         app = self._apps[connection_id]
