@@ -29,7 +29,6 @@ from viavai import App, Server
 
 class MyApp(App):
     def __init__(self):
-        super().__init__()
         # Example: Set the logo and the name of the app
         # Example: Connect to some database
         # Example: Load some configuration
@@ -103,7 +102,7 @@ The `core` module contains a list of decorators that allows to create custom eve
 - `url` decorator allows to create a custom page that with nested urls, see the Page section for more details.
 
 ```python
-from viavai.core import threaded, signal, url
+from viavai import threaded, signal, url
 
 @threaded
 def long_task():
@@ -126,16 +125,13 @@ The page has by default a vertical layout.
 
 
 ```python
-from viavai import Page
-from viavai.core import url
+from viavai import Page, url
 from viavai.ui import Button, Text
 
 
 @url("/home/{id_1}/{id_2}")
 class HomePage(Page):
     def __init__(self, id_1, id_2):
-        super().__init__()
-
         self.button = Button("Submit")
         self.button.on_click = self.on_click
         self.text = Text("Place here some text")
@@ -210,13 +206,11 @@ The `layouts` module contains a list of layouts that can be used to create more 
 In this example we create a custom card layout, with some element an event handler.
 ```python
 from viavai import context
-from viavai.layouts import Card
+from viavai.ui import Card
 
 
 class MyCard(Card):
     def __init__(self, title: str, default: str):
-        super().__init__()
-
         self.text = Text(title)
         self.input = Input(default)
         self.button = Button("Submit")

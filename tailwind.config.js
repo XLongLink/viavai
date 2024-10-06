@@ -1,7 +1,7 @@
 module.exports = {
     darkMode: ["class"],
     content: [
-        './ui/**/*.jsx', // Adjust the path based on where your JSX files are located
+        './view/**/*.jsx', // Adjust the path based on where your JSX files are located
     ],
     theme: {
         container: {
