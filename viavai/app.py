@@ -6,7 +6,6 @@ class App:
         Root class of a viavai application.
         An instance of this class is created every time an user connects to the server.
     """
-
     _pages: list[Page] = []
 
     def __init_subclass__(cls, **kwargs):
