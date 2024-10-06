@@ -24,10 +24,10 @@ new WebpackPackager('view/index.jsx', 'viavai/static/bundle.js').pack();
 
 
 // Compile the components
-new WebpackPackager('view/core/VLayout.jsx', 'viavai/static/ui/VLayout.js').pack();
-new WebpackPackager('view/core/HLayout.jsx', 'viavai/static/ui/HLayout.js').pack();
-new WebpackPackager('view/core/Button.jsx', 'viavai/static/ui/Button.js').pack();
-new WebpackPackager('view/core/Text.jsx', 'viavai/static/ui/Text.js').pack();
-new WebpackPackager('view/core/Space.jsx', 'viavai/static/ui/Space.js').pack();
-new WebpackPackager('view/core/Input.jsx', 'viavai/static/ui/Input.js').pack();
+new WebpackPackager('view/ui/VLayout.jsx', 'viavai/static/ui/VLayout.js').pack();
+new WebpackPackager('view/ui/HLayout.jsx', 'viavai/static/ui/HLayout.js').pack();
+new WebpackPackager('view/ui/Button.jsx', 'viavai/static/ui/Button.js').pack();
+new WebpackPackager('view/ui/Text.jsx', 'viavai/static/ui/Text.js').pack();
+new WebpackPackager('view/ui/Space.jsx', 'viavai/static/ui/Space.js').pack();
+new WebpackPackager('view/ui/Input.jsx', 'viavai/static/ui/Input.js').pack();
 // TODO: Add more components here

@@ -1,6 +1,6 @@
 from viavai import App, Server, Page, context
-from viavai.core import Button, VLayout
-# from viavai.context import context
+from viavai.ui import Button, VLayout
+
 
 class MyPage(Page):
     def __init__(self):
