@@ -1,32 +1,31 @@
-from viavai import App, Server, Page
+from viavai import App, Server, Page, context
 from viavai.core import Button, VLayout
+# from viavai.context import context
 
 class MyPage(Page):
     def __init__(self):
-        super().__init__()
-
         self.layout = VLayout()
-        self._components.append(self.layout)
+        self.add(self.layout)
 
-        self.buttons = []
-        for i in range(20_000):
-            button = Button(f'Hello world {i}')
-            button._on_click = self.on_click
-            self.layout.add(button)
-            self.buttons.append(button)
+        context.set("user_id", 123)
+
+        self.button = Button('Hello world')
+        self.button.on_click(self.on_click)
+        self.layout.add(self.button)
 
         self._times = 0
 
     def on_click(self):
         self._times += 1
-        for button in self.buttons:
-            button._text = f'Button clicked {self._times} times'
+        user_id = context.get("user_id")
+        print(user_id)
+        self.button.set_text(f'Hello world ({self._times})')
+
 
 class MyApp(App):
     def __init__(self):
-        super().__init__()
         page = MyPage()
-        self._pages.append(page)
+        self.add_page(page)
 
 
 # app = MyApp()

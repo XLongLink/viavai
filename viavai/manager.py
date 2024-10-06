@@ -35,7 +35,7 @@ class ConnectionManager:
 
         # Send to the user the first render of the app
         # NOTE: The render should be fast and not block the event loop
-        obj = self._apps[connection_id].render()
+        obj = self._apps[connection_id]._render()
         await websocket.send_text(json.dumps(obj))
 
         # Save the connection and return the ID
@@ -61,7 +61,8 @@ class ConnectionManager:
         # A user interaction
         def handle_message(message: str, app: App):
             message = json.loads(message)
-            return app._events(message)
+            app._event(message)
+            return app._render()
 
         app = self._apps[connection_id]
         response = await asyncio.to_thread(handle_message, message, app)

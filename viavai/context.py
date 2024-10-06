@@ -7,9 +7,6 @@ class UserContext:
         # TODO: If the user ID is a known one, load the user's data
         self.user_id = user_id
 
-    def get_id(self):
-        return self.user_id
-    
 
 class Context(UserContext):
     """The context class is created once for the entire application"""
@@ -27,3 +24,9 @@ class Context(UserContext):
 
 
 context = Context()
+
+def get(key: str):
+    return getattr(context, key)
+
+def set(key: str, value):
+    setattr(context, key, value)

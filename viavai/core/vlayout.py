@@ -8,13 +8,13 @@ class VLayout(Component):
     def add(self, component: Component) -> None:
         self._children.append(component)
 
-    def render(self) -> dict:
+    def _render(self) -> dict:
         return {
             "vVLayout": {
-                "children": [child.render() for child in self._children]
+                "children": [child._render() for child in self._children]
             }
         }
     
-    def event(self, message: dict) -> None:
+    def _event(self, message: dict) -> None:
         for child in self._children:
-            child.event(message)
+            child._event(message)

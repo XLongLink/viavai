@@ -27,11 +27,13 @@ class Button(Component):
     - Link
     """
 
+    _text = ""
+
     def __init__(self, text: str):
         self._text = text
         self._on_click = None
 
-    def render(self) -> dict:
+    def _render(self) -> dict:
         return  { 
             "vButton": {
                 "id": self._id,
@@ -39,8 +41,14 @@ class Button(Component):
             }
         }
     
-    def event(self, message: dict) -> None:
+    def _event(self, message: dict) -> None:
         if not message["id"] == self._id:
             return
         if message["type"] == "click":
             self._on_click()
+
+    def set_text(self, text: str):
+        self._text = text
+
+    def on_click(self, callback: callable):
+        self._on_click = callback
