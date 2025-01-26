@@ -21,7 +21,7 @@ pip install viavai
 
 ## App
 
-The `App` class contains the core logic and functionality of the application. When a user connects, the `Server` class creates a separate instance of the `App` for each user, ensuring that the same logic is applied to all users while keeping their sessions isolated. The `Server` class is responsible for running the application and managing user connections.
+The `App` class implements the core functionality of the application. When a user connects, the `Server` class spawns a dedicated `App` instance for that session, ensuring a consistent experience for all users while keeping each session isolated. The `Server` also orchestrates the application and handles user connections.
 
 ```python
 from viavai import App, Server
