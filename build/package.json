@@ -1,0 +1,5 @@
+{
+	"scripts": {
+		"build:libs": "python -m libraries"
+	}
+}
