@@ -5,9 +5,7 @@
 	"type": "module",
 	"scripts": {
 		"dev": "vite",
-		"build": "tsc -b && vite build --emptyOutDir",
-		"lint": "eslint .",
-		"preview": "vite preview"
+		"build": "tsc -b && vite build --emptyOutDir"
 	},
 	"dependencies": {
 		"@hookform/resolvers": "^4.1.0",
