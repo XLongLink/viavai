@@ -1,5 +1,9 @@
 import * as React from "react"
-import { Plus } from "lucide-react"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Plus } from 'lucide-react';
+import { DynamicIcon } from 'lucide-react/dynamic';
+import type { IconName } from "lucide-react/dynamic";
+
 import {
     Sidebar as Side,
     SidebarContent,
@@ -13,52 +17,34 @@ import {
     SidebarGroupAction,
 } from "@/components/ui/sidebar"
 
-// Define the structure of the menu configuration
-interface MenuHeader {
-    logo: React.ReactNode
-    title: string
-    subtitle: string
-}
+import type { Section } from "@/types"
 
-interface MenuItem {
-    title: string
-    icon?: React.ReactNode
-    type?: "default" | "plus" | string
-    // element can be used to render any additional UI like dropdowns or badges
-    element?: React.ReactNode
-}
+export interface SidebarProps {
+    logo: string;
+    title: string;
+    subtitle: string;
+    sections: Section[]
+};
 
-interface MenuSection {
-    title: string
-    type?: "default" | "plus" | string
-    items: MenuItem[]
-}
-
-interface MenuData {
-    header: MenuHeader
-    content: MenuSection[]
-}
-
-interface DynamicMenuProps {
-    menuData: MenuData
-}
-
-export const Sidebar: React.FC<DynamicMenuProps> = ({ menuData }) => {
+export const Sidebar: React.FC<SidebarProps> = ({ logo, title, subtitle, sections }) => {
     return (
         <Side collapsible="icon">
             <SidebarHeader>
                 <SidebarMenu>
                     <SidebarMenuItem>
-                        <SidebarMenuButton size="lg">
+                        <SidebarMenuButton size="lg" className="pointer-events-none">
                             <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
-                                {menuData.header.logo}
+                                <Avatar>
+                                    <AvatarImage src={logo} />
+                                    <AvatarFallback>VV</AvatarFallback>
+                                </Avatar>
                             </div>
                             <div className="grid flex-1 text-left text-sm leading-tight">
                                 <span className="truncate font-semibold">
-                                    {menuData.header.title}
+                                    {title}
                                 </span>
                                 <span className="truncate text-xs">
-                                    {menuData.header.subtitle}
+                                    {subtitle}
                                 </span>
                             </div>
                         </SidebarMenuButton>
@@ -66,10 +52,10 @@ export const Sidebar: React.FC<DynamicMenuProps> = ({ menuData }) => {
                 </SidebarMenu>
             </SidebarHeader>
             <SidebarContent>
-                {menuData.content.map((section, sectionIdx) => (
+                {sections.map((section, sectionIdx) => (
                     <SidebarGroup key={sectionIdx}>
                         <SidebarGroupLabel className="flex items-center justify-between">
-                            {section.title}
+                            {section.name}
                             {section.type === "plus" && (
                                 <SidebarGroupAction title="Add Project">
                                     <Plus /> <span className="sr-only">Add Project</span>
@@ -81,15 +67,10 @@ export const Sidebar: React.FC<DynamicMenuProps> = ({ menuData }) => {
                                 <SidebarMenuItem key={itemIdx}>
                                     <SidebarMenuButton asChild>
                                         <a href="#">
-                                            {item.icon && <span className="mr-2">{item.icon}</span>}
-                                            <span>{item.title}</span>
+                                            <DynamicIcon name={item.icon as IconName} size={48} />
+                                            <span>{item.name}</span>
                                         </a>
                                     </SidebarMenuButton>
-                                    {item.element && (
-                                        <div className="menu-element">
-                                            {item.element}
-                                        </div>
-                                    )}
                                 </SidebarMenuItem>
                             ))}
                         </SidebarMenu>

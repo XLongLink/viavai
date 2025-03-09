@@ -1,4 +1,5 @@
 import { Sidebar } from "@/components/sidebar"
+import type { SidebarProps } from "@/components/sidebar"
 import {
     Breadcrumb,
     BreadcrumbItem,
@@ -14,60 +15,47 @@ import {
     SidebarTrigger,
 } from "@/components/ui/sidebar"
 import { ModeToggle } from "@/components/mode-toggle"
-import { Map, Bot, Home } from "lucide-react"
-import {
-    DropdownMenu,
-    DropdownMenuTrigger,
-    DropdownMenuContent,
-    DropdownMenuItem,
-} from "@/components/ui/dropdown-menu"
 
-
-const menuConfig = {
-    header: {
-        logo: <Map />,
-        title: "LongLink",
-        subtitle: "A viaVai",
-    },
-    content: [
+export const menuData: SidebarProps = {
+    logo: "/images/logo.svg",
+    title: "Acme Inc.",
+    subtitle: "Admin Portal",
+    sections: [
         {
-            title: "Team",
-            type: "plus",
+            name: 'Main',
+            type: 'default',
             items: [
                 {
-                    title: "Example",
-                    icon: <Bot />,
-                    type: "default",
-                    element: (
-                        // For example, a dropdown could be inserted here:
-                        <DropdownMenu>
-                            <DropdownMenuTrigger asChild>
-                                <button>
-                                    <span>More</span>
-                                </button>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent side="right" align="start">
-                                <DropdownMenuItem>Edit Project</DropdownMenuItem>
-                                <DropdownMenuItem>Delete Project</DropdownMenuItem>
-                            </DropdownMenuContent>
-                        </DropdownMenu>
-                    ),
+                    icon: 'home',
+                    name: 'Home',
                 },
                 {
-                    title: "Home",
-                    icon: <Home />,
-                    type: "default",
+                    icon: 'settings',
+                    name: 'Settings',
                 },
             ],
         },
-    ],
+        {
+            name: 'Team',
+            type: 'plus',
+            items: [
+                {
+                    icon: 'bot',
+                    name: 'Example',
+                },
+                {
+                    icon: 'home',
+                    name: 'Home',
+                }
+            ],
+        },
+    ]
 }
-
 
 export default function Page() {
     return (
         <SidebarProvider>
-            <Sidebar menuData={menuConfig} />
+            <Sidebar {...menuData} />
             <SidebarInset>
                 <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
                     <div className="flex items-center gap-2 px-4">
