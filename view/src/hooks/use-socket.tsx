@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { AppState } from '@/types';
 
 declare global {
     interface Window {
@@ -7,7 +8,7 @@ declare global {
 }
 
 export function useWebSocket() {
-    const [appState, setAppState] = useState({});
+    const [appState, setAppState] = useState<AppState | null>(null);
     const socketRef = useRef<WebSocket | null>(null);
 
     useEffect(() => {

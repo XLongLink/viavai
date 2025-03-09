@@ -33,7 +33,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ logo, title, subtitle, section
                 <SidebarMenu>
                     <SidebarMenuItem>
                         <SidebarMenuButton size="lg" className="pointer-events-none">
-                            <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
+                            <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground mr-2">
                                 <Avatar>
                                     <AvatarImage src={logo} />
                                     <AvatarFallback>VV</AvatarFallback>

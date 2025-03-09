@@ -2,7 +2,7 @@ from pydantic import BaseModel
 from .navbar import Section
 
 
-class State(BaseModel):
+class AppState(BaseModel):
     """Is the object that is sent to the user to render the page
     This object has to be in sync from the backend to the frontend
     """

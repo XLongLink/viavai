@@ -307,5 +307,5 @@ The state of the frontend is always synced with the server, this is done using a
 ```
 
 ```
-pydantic2ts --module ./viavai/types/__init__.py --output ./view/src/types.ts
+pydantic2ts --module ./viavai/dtypes/__init__.py --output ./view/src/types.ts
 ```

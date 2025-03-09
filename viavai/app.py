@@ -33,9 +33,41 @@ class App:
 
     def _render(self) -> dict:
         """Render the app, return the Json structure"""
-        obj = {}
-        if self._pages:
-            obj["main"] = self._pages[0]._render()
+        obj = {
+            "logo": "/images/logo.svg",
+            "title": "Acme Inc.",
+            "subtitle": "Admin Portal",
+            "header": [
+            {
+                "name": 'Main',
+                "type": 'default',
+                "items": [
+                {
+                    "icon": 'home',
+                    "name": 'Home',
+                },
+                {
+                    "icon": 'settings',
+                    "name": 'Settings',
+                },
+                ],
+            },
+            {
+                "name": 'Team',
+                "type": 'plus',
+                "items": [
+                {
+                    "icon": 'bot',
+                    "name": 'Example',
+                },
+                {
+                    "icon": 'home',
+                    "name": 'Home',
+                }
+                ],
+            },
+            ]
+        }
         return obj
     
     def _event(self, message: dict) -> None:
