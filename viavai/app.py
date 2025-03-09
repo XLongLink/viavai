@@ -1,11 +1,20 @@
-from .page import Page
+class Page:
+    pass 
+
+
+class Navbar:
+    pass
 
 
 class App:
+    """Root class of a viavai application.
+
+    An instance of this class is created every time an user connects to the server
     """
-        Root class of a viavai application.
-        An instance of this class is created every time an user connects to the server.
-    """
+    _logo = None
+    _title = None
+    _subtitle = None
+    _navbar: Navbar = None
     _pages: list[Page] = []
 
     def __init_subclass__(cls, **kwargs):

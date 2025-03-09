@@ -24,7 +24,7 @@ class ConnectionManager:
         # NOTE: For now, we generate a new connection ID for each connection
         connection_id = str(uuid.uuid4())
 
-        # Create the usercontext for the current connection
+        # Create the user context for the current connection
         user_context = UserContext(connection_id)
         context.__var__.set(user_context)
 
