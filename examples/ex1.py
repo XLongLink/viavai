@@ -7,7 +7,7 @@ class ViavaiApp(App):
     subtitle = "Admin Portal"
     
     def __init__(self):
-        section = self.add_section("Main", "default")
+        section = self.add_section("Main", "plus")
         section.add_item("home", "Home")
         section.add_item("settings", "Settings")
         section = self.add_section("Team", "plus")

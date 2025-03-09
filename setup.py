@@ -8,7 +8,7 @@ setup(
     packages=find_packages(),
     include_package_data=True,
     description="A sample Python library called Viavai",
-    long_description=open('README.md').read(),
+    long_description=open('README.md', encoding='utf-8').read(),
     long_description_content_type='text/markdown',
     author="Sau1707",
     author_email="your.email@example.com",
