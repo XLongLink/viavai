@@ -56,7 +56,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ logo, title, subtitle, section
                     <SidebarGroup key={sectionIdx}>
                         <SidebarGroupLabel className="flex items-center justify-between">
                             {section.name}
-                            {section.type === "plus" && (
+                            {section.variant === "plus" && (
                                 <SidebarGroupAction title="Add Project">
                                     <Plus /> <span className="sr-only">Add Project</span>
                                 </SidebarGroupAction>

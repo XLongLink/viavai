@@ -4,6 +4,7 @@ import asyncio
 from fastapi import WebSocket
 from .app import App
 from .context import context, UserContext
+asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
 
 
 class ConnectionManager:
@@ -23,6 +24,7 @@ class ConnectionManager:
 
         # NOTE: For now, we generate a new connection ID for each connection
         connection_id = str(uuid.uuid4())
+        print(connection_id)
 
         # Create the user context for the current connection
         user_context = UserContext(connection_id)
@@ -36,7 +38,7 @@ class ConnectionManager:
         # Send to the user the first render of the app
         # NOTE: The render should be fast and not block the event loop
         obj = self._apps[connection_id]._render()
-        await websocket.send_text(json.dumps(obj))
+        await websocket.send_text(obj.model_dump_json())
 
         # Save the connection and return the ID
         self._connections[connection_id] = websocket
@@ -66,4 +68,4 @@ class ConnectionManager:
 
         app = self._apps[connection_id]
         response = await asyncio.to_thread(handle_message, message, app)
-        await self._connections[connection_id].send_text(json.dumps(response))
+        await self._connections[connection_id].send_text(response.model_dump_json())

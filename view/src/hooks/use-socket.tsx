@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { AppState } from '@/types';
+import { State } from '@/types';
 
 declare global {
     interface Window {
@@ -8,7 +8,7 @@ declare global {
 }
 
 export function useWebSocket() {
-    const [appState, setAppState] = useState<AppState | null>(null);
+    const [appState, setAppState] = useState<State | null>(null);
     const socketRef = useRef<WebSocket | null>(null);
 
     useEffect(() => {
@@ -24,6 +24,7 @@ export function useWebSocket() {
 
         socket.onmessage = (event) => {
             const updatedData = JSON.parse(event.data);
+            console.log('WebSocket message received:', updatedData);
             setAppState((prevState) => ({
                 ...prevState,
                 ...updatedData,

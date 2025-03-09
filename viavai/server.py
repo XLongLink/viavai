@@ -29,7 +29,6 @@ class Server:
         
     async def websocket_endpoint(self, websocket: WebSocket, token: str | None = Query(None)):
         conn_id = await self._manager.connect(websocket, token=token)
-
         try:
             while True:
                 data = await websocket.receive_text()

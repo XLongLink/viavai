@@ -1,7 +1,6 @@
 import { ThemeProvider } from "@/components/theme-provider"
 import { useWebSocket } from './hooks/use-socket.tsx'
 import { Sidebar } from "@/components/sidebar"
-import type { SidebarProps } from "@/components/sidebar"
 import {
     Breadcrumb,
     BreadcrumbItem,
@@ -18,43 +17,6 @@ import {
 } from "@/components/ui/sidebar"
 import { ModeToggle } from "@/components/mode-toggle"
 
-export const menuData: SidebarProps = {
-    logo: "/images/logo.svg",
-    title: "Acme Inc.",
-    subtitle: "Admin Portal",
-    sections: [
-        {
-            name: 'Main',
-            type: 'default',
-            items: [
-                {
-                    icon: 'home',
-                    name: 'Home',
-                },
-                {
-                    icon: 'settings',
-                    name: 'Settings',
-                },
-            ],
-        },
-        {
-            name: 'Team',
-            type: 'plus',
-            items: [
-                {
-                    icon: 'bot',
-                    name: 'Example',
-                },
-                {
-                    icon: 'home',
-                    name: 'Home',
-                }
-            ],
-        },
-    ]
-}
-
-
 export default function App() {
     const appState = useWebSocket()
 
@@ -67,7 +29,7 @@ export default function App() {
     return (
         <ThemeProvider>
             <SidebarProvider>
-                <Sidebar logo={appState.logo} title={appState.title} subtitle={appState.subtitle} sections={appState.header} />
+                <Sidebar logo={appState.logo} title={appState.title} subtitle={appState.subtitle} sections={appState.nav} />
                 <SidebarInset>
                     <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
                         <div className="flex items-center gap-2 px-4">
