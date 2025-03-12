@@ -11,8 +11,8 @@ export interface Item {
 }
 export interface Section {
   name: string;
-  items: Item[];
-  variant: "default" | "plus";
+  items?: Item[];
+  variant?: "default" | "plus" | "collapse";
 }
 /**
  * Is the object that is sent to the user to render the page

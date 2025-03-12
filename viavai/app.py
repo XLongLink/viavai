@@ -2,6 +2,12 @@ from pydantic import BaseModel
 from typing import Literal
 
 
+class Page:
+    # breadcrumb
+    # title
+    pass
+
+
 class Item(BaseModel):
     icon: str
     name: str
@@ -10,9 +16,9 @@ class Item(BaseModel):
 class Section(BaseModel):
     name: str
     items: list[Item] = []
-    variant: Literal["default", "plus"] = "default"
+    variant: Literal['default', 'plus', 'collapse'] = 'default'
 
-    def add_item(self, icon: str, name: str) -> Item:
+    def add_item(self, name: str, *, icon: str = None,  path=None) -> Item:
         item = Item(icon=icon, name=name)
         self.items.append(item)
         return item
@@ -55,7 +61,7 @@ class App:
 
         cls.__init__ = new_init
 
-    def add_section(self, name: str, variant: str) -> Section:
+    def add_section(self, name: str, variant: str = "default") -> Section:
         """Add a new section to the navbar"""
         section = Section(name=name, variant=variant)
         self.nav.append(section)
