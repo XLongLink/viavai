@@ -3,23 +3,35 @@ from typing import Literal
 
 
 class Page:
-    # breadcrumb
-    # title
-    pass
+    title: str
+    breadcrumb: list[str]
+    
+
+class SubItem(BaseModel):
+    name: str
+    icon: str | None = None
+    href: str | None = None
 
 
 class Item(BaseModel):
-    icon: str
     name: str
+    icon: str | None = None
+    href: str | None = None
+    items: list[SubItem] = []
 
+    def add_subitem(self, name: str, *, icon: str = None, href: str = None) -> SubItem:
+        subitem = SubItem(name=name, icon=icon, href=href)
+        self.items.append(subitem)
+        return subitem
+    
 
 class Section(BaseModel):
     name: str
     items: list[Item] = []
     variant: Literal['default', 'plus', 'collapse'] = 'default'
 
-    def add_item(self, name: str, *, icon: str = None,  path=None) -> Item:
-        item = Item(icon=icon, name=name)
+    def add_item(self, name: str, *, icon: str = None, href: str = None) -> Item:
+        item = Item(icon=icon, name=name, href=href)
         self.items.append(item)
         return item
 

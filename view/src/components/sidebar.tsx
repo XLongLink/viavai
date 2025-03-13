@@ -1,10 +1,14 @@
-import * as React from "react"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Plus } from 'lucide-react';
-import { DynamicIcon } from 'lucide-react/dynamic';
+import type { Section, Item } from "@/types"
 import type { IconName } from "lucide-react/dynamic";
-import { ChevronDown } from "lucide-react"
-
+import { Link } from "@/components/link"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Plus, ChevronDown } from 'lucide-react';
+import { DynamicIcon } from 'lucide-react/dynamic';
+import {
+    Collapsible,
+    CollapsibleContent,
+    CollapsibleTrigger,
+} from "@/components/ui/collapsible"
 import {
     Sidebar as Side,
     SidebarContent,
@@ -16,22 +20,11 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
     SidebarGroupAction,
+    SidebarMenuSub,
+    SidebarMenuSubItem,
+    SidebarMenuSubButton,
+    SidebarMenuAction
 } from "@/components/ui/sidebar"
-
-import {
-    Collapsible,
-    CollapsibleContent,
-    CollapsibleTrigger,
-} from "@/components/ui/collapsible"
-
-import type { Section } from "@/types"
-
-export interface SidebarProps {
-    logo: string;
-    title: string;
-    subtitle: string;
-    sections: Section[]
-};
 
 
 function Header({ logo, title, subtitle }: { logo: string, title: string, subtitle: string }) {
@@ -61,28 +54,71 @@ function Header({ logo, title, subtitle }: { logo: string, title: string, subtit
     )
 }
 
+function NavItem({ item }: { item: Item }) {
+    if (item.items && item.items.length > 0) {
+        return (
+            <Collapsible defaultOpen className="group/collapsible">
+                <SidebarMenuItem>
+                    <SidebarMenuButton asChild>
+                        <Link href={item.href}>
+                            <DynamicIcon name={item.icon as IconName} size={48} />
+                            <span>{item.name}</span>
+                        </Link>
+                    </SidebarMenuButton>
+                    <SidebarMenuAction>
+                        <CollapsibleTrigger asChild>
+                            <ChevronDown className="transition-transform group-data-[state=open]/collapsible:rotate-180" />
+                        </CollapsibleTrigger>
+                    </SidebarMenuAction>
+                    <CollapsibleContent>
+                        {item.items && item.items.length > 0 && (
+                            <SidebarMenuSub>
+                                {item.items.map((subItem, subItemIdx) => (
+                                    <SidebarMenuSubItem key={subItemIdx}>
+                                        <SidebarMenuSubButton className="cursor-pointer" asChild>
+                                            <Link href={subItem.href}>
+                                                {subItem.name}
+                                            </Link>
+                                        </SidebarMenuSubButton>
+                                    </SidebarMenuSubItem>
+                                ))}
+                            </SidebarMenuSub>
+                        )}
+                    </CollapsibleContent>
+                </SidebarMenuItem >
+            </Collapsible>
+        )
+    }
 
-function Items({ items }: { items: Section["items"] }) {
+    return (
+        <SidebarMenuItem>
+            <SidebarMenuButton asChild>
+                <Link href={item.href}>
+                    <DynamicIcon name={item.icon as IconName} size={48} />
+                    <span>{item.name}</span>
+                </Link>
+            </SidebarMenuButton>
+        </SidebarMenuItem >
+    )
+}
+
+
+function Items({ items }: { items: Item[] }) {
     if (!items) return
 
     return (
         <SidebarMenu>
             {items.map((item, itemIdx) => (
-                <SidebarMenuItem key={itemIdx}>
-                    <SidebarMenuButton asChild>
-                        <a href="#">
-                            <DynamicIcon name={item.icon as IconName} size={48} />
-                            <span>{item.name}</span>
-                        </a>
-                    </SidebarMenuButton>
-                </SidebarMenuItem>
+                <NavItem key={itemIdx} item={item} />
             ))}
-        </SidebarMenu>
+        </SidebarMenu >
     )
 }
 
 
 function SidebarCollapse({ section }: { section: Section }) {
+    if (!section.items) return
+
     return (
         <Collapsible defaultOpen className="group/collapsible">
             <SidebarGroup>
@@ -101,7 +137,7 @@ function SidebarCollapse({ section }: { section: Section }) {
 }
 
 
-export const Sidebar: React.FC<SidebarProps> = ({ logo, title, subtitle, sections }) => {
+export function Sidebar({ logo, title, subtitle, sections }: { logo: string, title: string, subtitle: string, sections: Section[] }) {
     return (
         <Side collapsible="icon">
             <Header logo={logo} title={title} subtitle={subtitle} />
@@ -119,9 +155,11 @@ export const Sidebar: React.FC<SidebarProps> = ({ logo, title, subtitle, section
                                     </SidebarGroupAction>
                                 )}
                             </SidebarGroupLabel>
-                            <SidebarMenu>
-                                <Items items={section.items} />
-                            </SidebarMenu>
+                            {section.items && section.items.length > 0 && (
+                                <SidebarMenu>
+                                    <Items items={section.items} />
+                                </SidebarMenu>
+                            )}
                         </SidebarGroup>
                     )
                 ))}

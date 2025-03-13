@@ -6,8 +6,15 @@
 */
 
 export interface Item {
-  icon: string;
   name: string;
+  icon?: string;
+  href?: string;
+  items?: SubItem[];
+}
+export interface SubItem {
+  name: string;
+  icon?: string;
+  href?: string;
 }
 export interface Section {
   name: string;
