@@ -36,9 +36,3 @@ class ViavaiApp(App):
         section = self.add_section("Archive", "collapse")
         section.add_item("201 Paris", icon="home", href="/archive/201")
         section.add_item("202 Berlin", icon="home", href="/archive/202")
-
-
-if __name__ == '__main__':
-    from viavai import Server
-    server = Server(ViavaiApp)
-    server.run()

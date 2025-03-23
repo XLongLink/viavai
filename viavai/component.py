@@ -1,12 +1,9 @@
 from abc import ABC, abstractmethod
-from typing import Optional
-from pydantic import BaseModel
 
 
 class Component(ABC):
-
     @abstractmethod
-    def _render(self) -> BaseModel:
+    def _render(self) -> dict:
         """Render the component into a pydantic model"""
 
     def _event(self, event: str):

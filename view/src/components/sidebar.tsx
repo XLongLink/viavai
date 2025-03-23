@@ -1,4 +1,4 @@
-import type { ModelSection, ModelItem } from "@/types"
+import type { TypeSection, TypeItem } from "@/types"
 import type { IconName } from "lucide-react/dynamic";
 import { Link } from "@/components/link"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
@@ -54,7 +54,7 @@ function Header({ logo, title, subtitle }: { logo: string, title: string, subtit
     )
 }
 
-function NavItem({ item }: { item: Item }) {
+function NavItem({ item }: { item: TypeItem }) {
     if (item.items && item.items.length > 0) {
         return (
             <Collapsible defaultOpen className="group/collapsible">
@@ -76,7 +76,7 @@ function NavItem({ item }: { item: Item }) {
                                 {item.items.map((subItem, subItemIdx) => (
                                     <SidebarMenuSubItem key={subItemIdx}>
                                         <SidebarMenuSubButton className="cursor-pointer" asChild>
-                                            <Link href={subItem.href}>
+                                            <Link href={subItem.href ?? ""}>
                                                 {subItem.name}
                                             </Link>
                                         </SidebarMenuSubButton>
@@ -103,7 +103,7 @@ function NavItem({ item }: { item: Item }) {
 }
 
 
-function Items({ items }: { items: Item[] }) {
+function Items({ items }: { items: TypeItem[] }) {
     if (!items) return
 
     return (
@@ -116,7 +116,7 @@ function Items({ items }: { items: Item[] }) {
 }
 
 
-function SidebarCollapse({ section }: { section: Section }) {
+function SidebarCollapse({ section }: { section: TypeSection }) {
     if (!section.items) return
 
     return (
@@ -137,7 +137,7 @@ function SidebarCollapse({ section }: { section: Section }) {
 }
 
 
-export function Sidebar({ logo, title, subtitle, sections }: { logo: string, title: string, subtitle: string, sections: Section[] }) {
+export function Sidebar({ logo, title, subtitle, sections }: { logo: string, title: string, subtitle: string, sections: TypeSection[] }) {
     return (
         <Side collapsible="icon">
             <Header logo={logo} title={title} subtitle={subtitle} />

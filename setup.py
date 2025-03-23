@@ -1,6 +1,5 @@
 from setuptools import setup, find_packages
 
-
 setup(
     name="viavai",
     use_scm_version=True,
@@ -19,4 +18,7 @@ setup(
         "Operating System :: OS Independent",
     ],
     python_requires='>=3.11',
+    package_data={
+        'viavai': ['static/*']
+    },
 )
