@@ -1,4 +1,4 @@
-from example.pages import Initiation, Planning, Execution, Project
+from example.pages import Initiation, Planning, Execution, Project, Home
 from example.database import projects
 from viavai import App
 
@@ -14,6 +14,7 @@ class ViavaiApp(App):
         self.add_page(Planning)
         self.add_page(Initiation)
         self.add_page(Execution)
+        self.add_page(Home)
 
         section = self.add_section("Example")
         section.add_item("Home", icon="home", href="/")
@@ -41,5 +42,3 @@ class ViavaiApp(App):
             item.add_subitem("Initiation", href=f"/projects/{project['id']}/initiation")
             item.add_subitem("Planning", href=f"/projects/{project['id']}/planning")
             item.add_subitem("Execution", href=f"/projects/{project['id']}/execution")
-
-

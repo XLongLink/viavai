@@ -138,8 +138,11 @@ function SidebarCollapse({ section }: { section: TypeSection }) {
 
 
 export function Sidebar({ app, nav }: { app?: TypeApp, nav?: TypeSection[] }) {
+    // TODO: Add skeleton loading state
     if (!app || !nav) {
-        return <></>
+        return (
+            <Side collapsible="icon" />
+        )
     };
 
     return (

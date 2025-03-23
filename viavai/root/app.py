@@ -19,7 +19,7 @@ class App(Base):
     # Pages active and list of all pages
     _page: Page
     _pages: list[Page]
-    
+
     def add_section(self, name: str, variant: str = "default") -> Section:
         """Add a new section to the navbar"""
         section = Section(name=name, variant=variant)
@@ -55,4 +55,3 @@ class App(Base):
             self._page = Page404()
             return
 
-        print(message)

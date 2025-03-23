@@ -4,6 +4,7 @@ import asyncio
 from fastapi import WebSocket
 from .root.app import App
 from .context import context, UserContext
+from .decorators import get_class
 asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
 
 
@@ -31,7 +32,12 @@ class ConnectionManager:
 
         # Initialize the App for the current connection
         # The initialization is done on a separate thread in case of heavy computation
-        app = await asyncio.to_thread(lambda: self._app())
+        app: App = await asyncio.to_thread(lambda: self._app())
+
+        # If an initial page is defined, set it
+        if page := get_class("/"):
+            app._page = page
+        
         self._apps[connection_id] = app
 
         # Send to the user the first render of the app
