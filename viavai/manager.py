@@ -68,4 +68,5 @@ class ConnectionManager:
 
         app = self._apps[connection_id]
         response = await asyncio.to_thread(handle_message, message, app)
+        print(json.dumps(response, indent=2))
         await self._connections[connection_id].send_text(json.dumps(response))
