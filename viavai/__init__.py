@@ -1,6 +1,3 @@
-from .app import App
+from .app import App, Page
 from .server import Server
-
-if __name__ == '__main__':
-    server = Server(App)
-    server.run()
+from .decorators import url

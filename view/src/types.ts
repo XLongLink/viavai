@@ -5,29 +5,38 @@
 /* Do not modify it by hand - just update the pydantic models and then re-run the script
 */
 
-export interface Item {
-  name: string;
-  icon?: string;
-  href?: string;
-  items?: SubItem[];
+export interface ModelPage {
+  title: string;
+  breadcrumb: ModelBreadcrumb[];
 }
-export interface SubItem {
+export interface ModelBreadcrumb {
   name: string;
-  icon?: string;
-  href?: string;
+  href: string;
 }
-export interface Section {
+export interface ModelSection {
   name: string;
-  items?: Item[];
+  items?: ModelItem[];
   variant?: "default" | "plus" | "collapse";
+}
+export interface ModelItem {
+  name: string;
+  icon?: string | null;
+  href?: string | null;
+  items?: ModelSubItem[];
+}
+export interface ModelSubItem {
+  name: string;
+  icon?: string | null;
+  href?: string | null;
 }
 /**
  * Is the object that is sent to the user to render the page
  * This object has to be in sync from the backend to the frontend
  */
-export interface State {
+export interface ModelState {
   logo: string;
   title: string;
   subtitle: string;
-  nav: Section[];
+  nav: ModelSection[];
+  main: ModelPage;
 }

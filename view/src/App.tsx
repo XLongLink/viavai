@@ -19,7 +19,7 @@ import { ModeToggle } from "@/components/mode-toggle"
 import { Dev } from "./dev.tsx"
 
 export default function App() {
-    const appState = useWebSocket()
+    const { appState } = useWebSocket()
 
     if (!appState) {
         return (

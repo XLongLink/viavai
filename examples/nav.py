@@ -1,7 +1,14 @@
-from viavai import App
+from viavai import App, Page, url
 
-# TODO: Add a sub-section to the navbar -> project -> tasks
-# TODO: Add action for the plus button -> modal? popup?
+
+@url("/projects/{project_id}/initiation")
+class ProjectsInitiation(Page):
+    title = "Initiation"
+    breadcrumb = ["Projects", "000 NewYork", "Initiation"]
+
+    def __init__(self, project_id: str):
+        print(project_id)
+
 
 class ViavaiApp(App):
     logo = "/images/logo.svg"

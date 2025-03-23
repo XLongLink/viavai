@@ -38,7 +38,7 @@ class ConnectionManager:
         # Send to the user the first render of the app
         # NOTE: The render should be fast and not block the event loop
         obj = self._apps[connection_id]._render()
-        await websocket.send_text(obj.model_dump_json())
+        await websocket.send_text(json.dumps(obj))
 
         # Save the connection and return the ID
         self._connections[connection_id] = websocket
@@ -50,10 +50,10 @@ class ConnectionManager:
         del self._apps[connection_id]
         del self._connections[connection_id]
 
-    async def broadcast(self, message: str):
-        """Broadcast a message to all active connections"""
-        for connection in self._connections.values():
-            await connection.send_text(message)
+    # async def broadcast(self, message: str):
+    #     """Broadcast a message to all active connections"""
+    #     for connection in self._connections.values():
+    #         await connection.send_text(message)
 
     async def message(self, connection_id: str, message: str):
         """Send a message to a specific connection"""
@@ -68,4 +68,4 @@ class ConnectionManager:
 
         app = self._apps[connection_id]
         response = await asyncio.to_thread(handle_message, message, app)
-        await self._connections[connection_id].send_text(response.model_dump_json())
+        await self._connections[connection_id].send_text(json.dumps(response))

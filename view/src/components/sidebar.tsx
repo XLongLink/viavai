@@ -1,4 +1,4 @@
-import type { Section, Item } from "@/types"
+import type { ModelSection, ModelItem } from "@/types"
 import type { IconName } from "lucide-react/dynamic";
 import { Link } from "@/components/link"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"

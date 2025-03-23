@@ -1,52 +1,6 @@
-from pydantic import BaseModel
-from typing import Literal
-
-
-class Page:
-    title: str
-    breadcrumb: list[str]
-    
-
-class SubItem(BaseModel):
-    name: str
-    icon: str | None = None
-    href: str | None = None
-
-
-class Item(BaseModel):
-    name: str
-    icon: str | None = None
-    href: str | None = None
-    items: list[SubItem] = []
-
-    def add_subitem(self, name: str, *, icon: str = None, href: str = None) -> SubItem:
-        subitem = SubItem(name=name, icon=icon, href=href)
-        self.items.append(subitem)
-        return subitem
-    
-
-class Section(BaseModel):
-    name: str
-    items: list[Item] = []
-    variant: Literal['default', 'plus', 'collapse'] = 'default'
-
-    def add_item(self, name: str, *, icon: str = None, href: str = None) -> Item:
-        item = Item(icon=icon, name=name, href=href)
-        self.items.append(item)
-        return item
-
-
-class State(BaseModel):
-    """Is the object that is sent to the user to render the page
-    This object has to be in sync from the backend to the frontend
-    """
-    logo: str             # URL to the Logo 
-    title: str            # Title of the application
-    subtitle: str         # Subtitle of the application (if any)
-
-    nav: list[Section] # List of sections in the header
-    # main: list[Section] # The main content  
-    # TODO: Maybe a modal here? -> like the current open modal.
+from .nav import Section
+from .page import Page, Page404
+from .decorators import get_class
 
 
 class App:
@@ -58,17 +12,21 @@ class App:
     title: str = "ViaVai"
     subtitle: str = "a LongLink product"
 
-    nav: list[Section]
+    nav: list[Section]  # List of sections in the header
+    page: Page          # The current page   
+    pages: list[Page]   # List of all pages
 
     def __init__(self):
         self.nav = []
-
+    
     def __init_subclass__(cls, **kwargs):
         """Ensure that the class has a list of pages and a navbar"""
         original_init = cls.__init__
 
         def new_init(self: "App", *args, **kwargs):
             self.nav = []
+            self.page = Page()
+
             original_init(self, *args, **kwargs)
 
         cls.__init__ = new_init
@@ -79,15 +37,25 @@ class App:
         self.nav.append(section)
         return section
 
-    def _render(self) -> State:
+    def add_page(self, page: Page) -> None:
+        """Add a new page to the list of pages"""
+        self.pages.append(page)
+        
+    def _render(self) -> dict:
         """Render the app, return the Json structure"""
-        return State(
-            logo=self.logo,
-            title=self.title,
-            subtitle=self.subtitle,
-            nav=self.nav,
-        )
+        return {
+            "logo": self.logo,
+            "title": self.title,
+            "subtitle": self.subtitle,
+            "nav": [section._render() for section in self.nav],
+            "main": self.page._render()
+        }
 
     def _event(self, message: dict) -> None:
         """Handle the forwarding of the events"""
+        if href := message.get('href'):
+            if page := get_class(href):
+                self.page = page
+            self.page = Page404()
+    
         print(message)

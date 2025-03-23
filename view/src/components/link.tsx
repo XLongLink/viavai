@@ -1,4 +1,5 @@
 import React from 'react';
+import { useWebSocket } from '@/hooks/use-socket.tsx'
 
 interface InterceptLinkProps extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
     href?: string;
@@ -6,10 +7,9 @@ interface InterceptLinkProps extends React.AnchorHTMLAttributes<HTMLAnchorElemen
 }
 
 export function Link({ href, children, onClick, ...rest }: InterceptLinkProps) {
-    const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
-        // TODO: Here send a request to the server to get the page content
-        // and update the page content with the response
+    const { setHref } = useWebSocket()
 
+    const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
         if (onClick) onClick(e);
         if (
             e.defaultPrevented ||
@@ -24,6 +24,7 @@ export function Link({ href, children, onClick, ...rest }: InterceptLinkProps) {
         e.preventDefault();
         window.history.pushState({}, '', href);
         window.dispatchEvent(new PopStateEvent('popstate'));
+        if (href) setHref(href);
     };
 
     return (

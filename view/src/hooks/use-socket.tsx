@@ -46,5 +46,13 @@ export function useWebSocket() {
         };
     }, []);
 
-    return appState;
+    const setHref = (href: string) => {
+        if (socketRef.current && socketRef.current.readyState === WebSocket.OPEN) {
+            socketRef.current.send(JSON.stringify({ href }));
+        } else {
+            console.error('WebSocket is not connected');
+        }
+    };
+
+    return { appState, setHref };
 }
