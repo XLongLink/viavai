@@ -29,5 +29,11 @@ projects = [
         "id": "202",
         "status": "inactive",
         "icon": "folder-open-dot",
+    },
+    {
+        "name": "Rome",
+        "id": "203",
+        "status": "inactive",
+        "icon": "clipboard-list",
     }
 ]

@@ -15,6 +15,9 @@ class ViavaiApp(App):
         self.add_page(Initiation)
         self.add_page(Execution)
 
+        section = self.add_section("Example")
+        section.add_item("Home", icon="home", href="/")
+
         # Create navbar section for active projects
         section = self.add_section("Projects", "plus")
 
@@ -22,7 +25,7 @@ class ViavaiApp(App):
         for project in projects:
             if project['status'] == 'inactive':
                 continue
-            item = section.add_item(f"{project['id']} {project['name']}", icon=project['icon'], href=f"/projects/{project['id']}")
+            item = section.add_item(f"{project['name']}", icon=project['icon'], href=f"/projects/{project['id']}")
             item.add_subitem("Initiation", href=f"/projects/{project['id']}/initiation")
             item.add_subitem("Planning", href=f"/projects/{project['id']}/planning")
             item.add_subitem("Execution", href=f"/projects/{project['id']}/execution")
@@ -34,7 +37,7 @@ class ViavaiApp(App):
         for project in projects:
             if project['status'] == 'active':
                 continue
-            item = section.add_item(f"{project['id']} {project['name']}", icon=project['icon'], href=f"/projects/{project['id']}")
+            item = section.add_item(f"{project['name']}", icon=project['icon'], href=f"/projects/{project['id']}")
             item.add_subitem("Initiation", href=f"/projects/{project['id']}/initiation")
             item.add_subitem("Planning", href=f"/projects/{project['id']}/planning")
             item.add_subitem("Execution", href=f"/projects/{project['id']}/execution")
