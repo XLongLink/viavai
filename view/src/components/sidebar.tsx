@@ -1,4 +1,4 @@
-import type { TypeSection, TypeItem } from "@/types"
+import type { TypeApp, TypeSection, TypeItem } from "@/types"
 import type { IconName } from "lucide-react/dynamic";
 import { Link } from "@/components/link"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
@@ -137,12 +137,16 @@ function SidebarCollapse({ section }: { section: TypeSection }) {
 }
 
 
-export function Sidebar({ logo, title, subtitle, sections }: { logo: string, title: string, subtitle: string, sections: TypeSection[] }) {
+export function Sidebar({ app, nav }: { app?: TypeApp, nav?: TypeSection[] }) {
+    if (!app || !nav) {
+        return <></>
+    };
+
     return (
         <Side collapsible="icon">
-            <Header logo={logo} title={title} subtitle={subtitle} />
+            <Header logo={app.logo} title={app.title} subtitle={app.subtitle} />
             <SidebarContent>
-                {sections.map((section, sectionIdx) => (
+                {nav.map((section, sectionIdx) => (
                     section.variant === "collapse" ? (
                         <SidebarCollapse key={sectionIdx} section={section} />
                     ) : (

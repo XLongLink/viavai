@@ -1,13 +1,11 @@
 from .item import  Item
 from typing import Literal
-from dataclasses import dataclass, field
-from ..component import Component
+from ..root.base import Base
 
 
-@dataclass
-class Section(Component):
+class Section(Base):
     name: str
-    items: list[Item] = field(default_factory=list)
+    items: list[Item]
     variant: Literal['default', 'plus', 'collapse'] = 'default'
 
     def add_item(self, name: str, *, icon: str = None, href: str = None) -> Item:

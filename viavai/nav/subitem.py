@@ -1,11 +1,8 @@
-from dataclasses import dataclass
-from ..component import Component
-
+from ..root.base import Base
 
 
 # TODO: Change this with a better name
-@dataclass
-class SubItem(Component):
+class SubItem(Base):
     name: str
     icon: str | None = None
     href: str | None = None

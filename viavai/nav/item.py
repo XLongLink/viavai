@@ -1,14 +1,12 @@
 from .subitem import SubItem
-from ..component import Component
-from dataclasses import dataclass, field
+from ..root.base import Base
 
 
-@dataclass
-class Item(Component):
+class Item(Base):
     name: str
-    icon: str | None = None
-    href: str | None = None
-    items: list[SubItem] = field(default_factory=list)
+    icon: str
+    href: str
+    items: list[SubItem]
 
     def add_subitem(self, name: str, *, icon: str = None, href: str = None) -> SubItem:
         subitem = SubItem(name=name, icon=icon, href=href)

@@ -4,7 +4,7 @@ from fastapi import FastAPI, Query
 from fastapi.staticfiles import StaticFiles
 from fastapi.websockets import WebSocket, WebSocketDisconnect
 
-from .app import App
+from .root.app import App
 from .manager import ConnectionManager
 
 

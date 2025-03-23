@@ -1,12 +1,14 @@
 from collections import OrderedDict
-from .component import Component
-from dataclasses import dataclass, field
+from .base import Base
 
 
-@dataclass
-class Page(Component):
+class Page(Base):
+    """Base class for all pages"""
     title: str = "A ViaVai Page"
-    _breadcrumb: OrderedDict[str, str] = field(default_factory=OrderedDict)
+    logo: str = "/images/logo.svg"
+
+    # Page breadcrumb
+    _breadcrumb: OrderedDict[str, str]
 
     def add_breadcrumb(self, name: str, href: str) -> None:
         if self._breadcrumb is None:
@@ -28,4 +30,3 @@ class Page(Component):
 
 class Page404(Page):
     title = "404 Not Found"
-    breadcrumb = ["404"]

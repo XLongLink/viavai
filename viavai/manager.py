@@ -2,7 +2,7 @@ import json
 import uuid
 import asyncio
 from fastapi import WebSocket
-from .app import App
+from .root.app import App
 from .context import context, UserContext
 asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
 
@@ -24,7 +24,6 @@ class ConnectionManager:
 
         # NOTE: For now, we generate a new connection ID for each connection
         connection_id = str(uuid.uuid4())
-        print(connection_id)
 
         # Create the user context for the current connection
         user_context = UserContext(connection_id)
@@ -38,6 +37,7 @@ class ConnectionManager:
         # Send to the user the first render of the app
         # NOTE: The render should be fast and not block the event loop
         obj = self._apps[connection_id]._render()
+        print(json.dumps(obj, indent=2))
         await websocket.send_text(json.dumps(obj))
 
         # Save the connection and return the ID

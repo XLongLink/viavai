@@ -1,4 +1,15 @@
+export interface TypeApp {
+	logo: string;
+	title: string;
+	subtitle: string;
+}
+
 export interface TypePage {
+	logo: string;
+	title: string;
+}
+
+export interface TypeMain {
 	title: string;
 	breadcrumb: TypeBreadcrumb[];
 }
@@ -10,27 +21,26 @@ export interface TypeBreadcrumb {
 
 export interface TypeSection {
 	name: string;
-	items?: TypeItem[];
-	variant?: 'default' | 'plus' | 'collapse';
+	items: TypeItem[];
+	variant: 'default' | 'plus' | 'collapse';
 }
 
 export interface TypeItem {
 	name: string;
-	icon?: string;
-	href?: string;
-	items?: TypeSubItem[];
+	icon: string;
+	href: string;
+	items: TypeSubItem[];
 }
 
 export interface TypeSubItem {
 	name: string;
-	icon?: string | null;
-	href?: string | null;
+	icon: string;
+	href: string;
 }
 
 export interface TypeState {
-	logo: string;
-	title: string;
-	subtitle: string;
+	app: TypeApp;
+	page: TypePage;
 	nav: TypeSection[];
-	main: TypePage;
+	main: TypeMain;
 }
