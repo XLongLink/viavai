@@ -46,7 +46,6 @@ export default function App() {
             <link rel="icon" href={appState.page.logo} type="image/x-icon" />
 
             <ThemeProvider>
-
                 <SidebarProvider>
                     <Sidebar app={appState.app} nav={appState.nav} />
                     <SidebarInset>

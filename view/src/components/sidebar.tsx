@@ -57,7 +57,7 @@ function Header({ logo, title, subtitle }: { logo: string, title: string, subtit
 function NavItem({ item }: { item: TypeItem }) {
     if (item.items && item.items.length > 0) {
         return (
-            <Collapsible defaultOpen className="group/collapsible">
+            <Collapsible className="group/collapsible">
                 <SidebarMenuItem>
                     <SidebarMenuButton asChild>
                         <Link href={item.href}>
