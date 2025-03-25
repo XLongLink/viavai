@@ -1,5 +1,5 @@
 from collections import OrderedDict
-from .base import Base
+from ..base import Base
 
 
 class Page(Base):
@@ -28,5 +28,4 @@ class Page(Base):
         return super()._event(event)
     
 
-class Page404(Page):
-    title = "404 Not Found"
+

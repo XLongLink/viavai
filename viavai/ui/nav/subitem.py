@@ -1,4 +1,4 @@
-from ..root.base import Base
+from ..base import Base
 
 
 # TODO: Change this with a better name

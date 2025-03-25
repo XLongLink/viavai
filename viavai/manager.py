@@ -2,7 +2,7 @@ import json
 import uuid
 import asyncio
 from fastapi import WebSocket
-from .root.app import App
+from .app import App
 from .context import context, UserContext
 from .decorators import get_class
 asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())

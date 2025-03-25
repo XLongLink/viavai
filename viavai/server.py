@@ -4,19 +4,17 @@ from fastapi import FastAPI, Query
 from fastapi.staticfiles import StaticFiles
 from fastapi.websockets import WebSocket, WebSocketDisconnect
 
-from .root.app import App
+from .app import App
 from .manager import ConnectionManager
 
 
-class Server:
+class Server(FastAPI):
     """"""
     
     def __init__(self, app: App):
         """Initialize the server with the app instance"""
-        self._host = None
-        self._port = None
+        super().__init__()
 
-        self._api = FastAPI()
         self._manager = ConnectionManager(app)
 
         # Since is server as a library, get the path where the current file is saved
@@ -24,8 +22,8 @@ class Server:
         dir_static = os.path.join(dir_current, "static")
 
         # Register the websocket endpoint
-        self._api.websocket('/ws')(self.websocket_endpoint)
-        self._api.mount("/", StaticFiles(directory=dir_static, html=True), name="static")
+        self.websocket('/ws')(self.websocket_endpoint)
+        self.mount("/", StaticFiles(directory=dir_static, html=True), name="static")
         
     async def websocket_endpoint(self, websocket: WebSocket, token: str | None = Query(None)):
         conn_id = await self._manager.connect(websocket, token=token)
@@ -35,9 +33,3 @@ class Server:
                 await self._manager.message(conn_id, data)
         except WebSocketDisconnect:
             self._manager.disconnect(conn_id)
-
-    def run(self, *, host: str = 'localhost', port: int = 8000):
-        """Run the server using uvicorn"""
-        self._host = host
-        self._port = port
-        uvicorn.run(self._api, host=host, port=port)

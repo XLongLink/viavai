@@ -1,10 +1,12 @@
-from ..nav import Section
-from .base import Base
-from .page import Page, Page404
-from ..decorators import get_class
+from .ui.nav import Section
+from .ui.page.page import Page
+from .decorators import get_class
+
+class Page404(Page):
+    title = "404 Not Found"
 
 
-class App(Base):
+class App:
     """Root class of a viavai application.
 
     An instance of this class is created every time an user connects to the server
@@ -19,6 +21,13 @@ class App(Base):
     # Pages active and list of all pages
     _page: Page
     _pages: list[Page]
+
+    def __new__(cls, *args, **kwargs) -> "App":
+        instance = super().__new__(cls)
+        instance._nav = []
+        instance._pages = []
+        instance._page = Page404()
+        return instance
 
     def add_section(self, name: str, variant: str = "default") -> Section:
         """Add a new section to the navbar"""

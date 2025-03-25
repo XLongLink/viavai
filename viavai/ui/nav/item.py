@@ -1,5 +1,5 @@
 from .subitem import SubItem
-from ..root.base import Base
+from ..base import Base
 
 
 class Item(Base):
