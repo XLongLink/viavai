@@ -1,4 +1,4 @@
-import type { TypeApp, TypeSection, TypeItem } from "@/types"
+import type { TypeNav, TypeSection, TypeItem } from "@/types"
 import type { IconName } from "lucide-react/dynamic";
 import { Link } from "@/components/link"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
@@ -137,9 +137,9 @@ function SidebarCollapse({ section }: { section: TypeSection }) {
 }
 
 
-export function Sidebar({ app, nav }: { app?: TypeApp, nav?: TypeSection[] }) {
+export function Sidebar({ nav }: { nav?: TypeNav }) {
     // TODO: Add skeleton loading state
-    if (!app || !nav) {
+    if (!nav) {
         return (
             <Side collapsible="icon" />
         )
@@ -147,9 +147,9 @@ export function Sidebar({ app, nav }: { app?: TypeApp, nav?: TypeSection[] }) {
 
     return (
         <Side collapsible="icon">
-            <Header logo={app.logo} title={app.title} subtitle={app.subtitle} />
+            <Header logo={nav.logo} title={nav.title} subtitle={nav.subtitle} />
             <SidebarContent>
-                {nav.map((section, sectionIdx) => (
+                {nav.sections.map((section, sectionIdx) => (
                     section.variant === "collapse" ? (
                         <SidebarCollapse key={sectionIdx} section={section} />
                     ) : (

@@ -10,18 +10,20 @@ class Page(Base):
     # Page breadcrumb
     _breadcrumb: OrderedDict[str, str]
 
+    # Page elements
+    _components: list[Base]
+
     def add_breadcrumb(self, name: str, href: str) -> None:
         if self._breadcrumb is None:
             self._breadcrumb = OrderedDict()
         self._breadcrumb[name] = href
+
+    def add_component(self, component: Base) -> None:
+        self._components.append(component)
         
     def _render(self) -> dict:
         return {
-            "title": self.title,
-            "breadcrumb": [
-                {"name": name, "href": href}
-                for name, href in self._breadcrumb.items()
-            ]
+            "children": [component._render() for component in self._components]
         }
 
     def _event(self, event):

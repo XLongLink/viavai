@@ -12,22 +12,25 @@ import { ModeToggle } from "@/components/mode-toggle"
 import { Dev } from "./dev.tsx"
 
 export default function App() {
-    const { appState } = useWebSocket()
+    const { page, nav, main } = useWebSocket()
+
+    // Todo if the page content is not loaded, then place a skeleton
+    if (!page || !main) return <></>
 
     return (
         <>
-            <title>{appState?.page.title}</title>
-            <link rel="icon" href={appState?.page.logo} type="image/x-icon" />
+            <title>{page.title}</title>
+            <link rel="icon" href={page.logo} type="image/x-icon" />
 
             <ThemeProvider>
                 <SidebarProvider>
-                    <Sidebar app={appState?.app} nav={appState?.nav} />
+                    <Sidebar nav={nav} />
                     <SidebarInset>
                         <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
                             <div className="flex items-center gap-2 px-4">
                                 <SidebarTrigger className="-ml-1" />
                                 <Separator orientation="vertical" className="mr-2 h-4" />
-                                <Breadcrumb breadcrumb={appState?.main.breadcrumb} />
+                                <Breadcrumb breadcrumb={page.breadcrumb} />
                             </div>
                             <div className="ml-auto mr-4">
                                 <ModeToggle />
@@ -48,3 +51,9 @@ export default function App() {
         </>
     )
 }
+
+// {main.components.map((component, index) => (
+//     <div key={index} className="rounded-xl bg-muted/50 p-4">
+//         {component}
+//     </div>
+// ))}

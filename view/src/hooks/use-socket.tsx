@@ -1,9 +1,12 @@
-import { TypeState } from '@/types';
 import { useEffect, useState } from 'react';
+import type { TypeNav, TypePage, TypeMain } from "@/types"
 
 let socket: WebSocket | null = null;
-let appState: TypeState | null = null;
-let listeners: ((state: TypeState) => void)[] = [];
+let page: TypePage | undefined = undefined;
+let nav: TypeNav | undefined = undefined;
+let main: TypeMain | undefined = undefined;
+
+let listeners: ((page: TypePage | undefined, nav: TypeNav | undefined, main: TypeMain | undefined) => void)[] = [];
 let retryInterval: NodeJS.Timeout | null = null;
 
 declare global {
@@ -25,8 +28,10 @@ function connectWebSocket(url: string) {
 
     socket.onmessage = (event) => {
         const updatedData = JSON.parse(event.data);
-        appState = { ...appState, ...updatedData };
-        listeners.forEach((cb) => cb(appState!));
+        if (updatedData.page !== undefined) page = updatedData.page;
+        if (updatedData.nav !== undefined) nav = updatedData.nav;
+        if (updatedData.main !== undefined) main = updatedData.main;
+        listeners.forEach((cb) => cb(page, nav, main));
     };
 
     socket.onerror = (error) => {
@@ -40,7 +45,7 @@ function connectWebSocket(url: string) {
             retryInterval = setInterval(() => {
                 console.log('Attempting to reconnect...');
                 initializeWebSocket(url);
-            }, 3000); // Retry every 3 seconds
+            }, 3000);
         }
     };
 }
@@ -51,17 +56,18 @@ export function initializeWebSocket(url: string) {
     connectWebSocket(url);
 }
 
-export function sendHref(href: string) {
+export function send(key: string, value: object) {
     if (socket && socket.readyState === WebSocket.OPEN) {
-        socket.send(JSON.stringify({ href }));
+        const message = { [key]: value };
+        socket.send(JSON.stringify(message));
     } else {
         console.error('WebSocket is not connected');
     }
 }
 
-export function subscribe(callback: (state: TypeState) => void) {
+export function subscribe(callback: (page: TypePage | undefined, nav: TypeNav | undefined, main: TypeMain | undefined) => void) {
     listeners.push(callback);
-    if (appState) callback(appState);
+    callback(page, nav, main);
 
     return () => {
         listeners = listeners.filter((cb) => cb !== callback);
@@ -70,7 +76,9 @@ export function subscribe(callback: (state: TypeState) => void) {
 
 
 export function useWebSocket() {
-    const [appState, setAppState] = useState<TypeState | null>(null);
+    const [page, setPage] = useState<TypePage | undefined>(undefined);
+    const [nav, setNav] = useState<TypeNav | undefined>(undefined);
+    const [main, setMain] = useState<TypeMain | undefined>(undefined);
 
     useEffect(() => {
         if (!window.wsURL) {
@@ -80,9 +88,13 @@ export function useWebSocket() {
 
         initializeWebSocket(window.wsURL);
 
-        const unsubscribe = subscribe(setAppState);
+        const unsubscribe = subscribe((page, nav, main) => {
+            setPage(page);
+            setNav(nav);
+            setMain(main);
+        });
         return unsubscribe;
     }, []);
 
-    return { appState, setHref: sendHref };
+    return { page, nav, main, send };
 }

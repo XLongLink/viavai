@@ -42,16 +42,19 @@ class App:
     def _render(self) -> dict:
         """Render the app, return the Json structure"""
         return {
-            "app": {
+            "page":{
+                "title": self._page.title,
+                "breadcrumb": [
+                    {"name": name, "href": href}
+                    for name, href in self._page._breadcrumb.items()
+                ],
+            },
+            "nav": {
                 "logo": self.logo,
                 "title": self.title,
-                "subtitle": self.subtitle
-            }, 
-            "page":{
-                "logo": self._page.logo,
-                "title": self._page.title
+                "subtitle": self.subtitle,
+                "sections": [section._render() for section in self._nav]
             },
-            "nav": [section._render() for section in self._nav],
             "main": self._page._render()
         }
 
@@ -63,4 +66,3 @@ class App:
                 return
             self._page = Page404()
             return
-
