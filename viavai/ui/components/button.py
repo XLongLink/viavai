@@ -10,5 +10,9 @@ class Button(Base):
     def _render(self) -> dict:
         return {
             "type": "button",
-            "text": self.text,
+            "props": {
+                "variant": "destructive",
+                "size": "lg"
+            },
+            "children": self.text
         }

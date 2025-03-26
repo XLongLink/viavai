@@ -1,15 +1,46 @@
+import type { TypeMain, TypeComponent } from "@/types"
 import { ThemeProvider } from "@/components/theme-provider"
 import { useWebSocket } from './hooks/use-socket.tsx'
 import { Sidebar } from "@/components/sidebar"
 import { Breadcrumb } from "@/components/breadcrumb"
 import { Separator } from "@/components/ui/separator"
-import {
-    SidebarInset,
-    SidebarProvider,
-    SidebarTrigger,
-} from "@/components/ui/sidebar"
+import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
 import { ModeToggle } from "@/components/mode-toggle"
 import { Dev } from "./dev.tsx"
+import { Button, TypeButton } from "@/components/ui/button"
+
+// const MemoButton = React.memo<{ text: string }>(({ text }) => {
+//     return (
+//         <Button >
+//             {text}
+//         </Button>
+//     );
+// });
+
+const UIRenderer = ({ main }: { main: TypeMain }) => {
+    const RenderComponent = (children: TypeComponent | string, index: number) => {
+        if (typeof children === 'string') {
+            return <> {children} </>
+        }
+
+        if (children.type === 'button') {
+            const button = children as TypeButton;
+            return (
+                <Button
+                    key={index}
+                    {...button.props}
+                >
+                    {button.children}
+                </Button>
+            );
+        }
+
+        return null;
+    };
+
+    return <div>{main.children.map(RenderComponent)}</div>;
+};
+
 
 export default function App() {
     const { page, nav, main } = useWebSocket()
@@ -37,6 +68,7 @@ export default function App() {
                             </div>
                         </header>
                         <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
+                            <UIRenderer main={main} />
                             <Dev />
                             <div className="grid auto-rows-min gap-4 md:grid-cols-3">
                                 <div className="aspect-video rounded-xl bg-muted/50" />

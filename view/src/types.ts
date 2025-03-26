@@ -45,5 +45,14 @@ export interface TypeMain {
 export interface TypeComponent {
 	type: string;
 	props: unknown;
-	children: TypeComponent[];
+	children: TypeComponent[] | string;
+}
+
+export interface TypeButton extends TypeComponent {
+	type: 'button';
+	props: {
+		variant: string;
+		size: string;
+	};
+	children: string;
 }
