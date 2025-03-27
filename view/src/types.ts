@@ -1,5 +1,5 @@
 /* Informations about the sidebar */
-export interface TypeNav {
+export interface TypeSidebar {
 	logo: string;
 	title: string;
 	subtitle: string;
@@ -30,6 +30,7 @@ export interface TypePage {
 	logo: string;
 	title: string;
 	breadcrumb: TypeBreadcrumb[];
+	children: TypeComponent[];
 }
 
 export interface TypeBreadcrumb {
@@ -37,22 +38,8 @@ export interface TypeBreadcrumb {
 	href: string;
 }
 
-/* Content of the page */
-export interface TypeMain {
-	children: TypeComponent[];
-}
-
 export interface TypeComponent {
 	type: string;
 	props: unknown;
 	children: TypeComponent[] | string;
-}
-
-export interface TypeButton extends TypeComponent {
-	type: 'button';
-	props: {
-		variant: string;
-		size: string;
-	};
-	children: string;
 }

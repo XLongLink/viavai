@@ -1,3 +1,3 @@
 from .app import App, Page
-from .server import Server
+from .server import Server, Sidebar
 from .decorators import url

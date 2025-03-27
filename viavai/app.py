@@ -1,4 +1,4 @@
-from .ui.nav import Section
+from .ui.sidebar import Section
 from .ui.page.page import Page
 from .decorators import get_class
 

@@ -19,7 +19,7 @@ class ConnectionManager:
         self._apps: dict[str, App] = {}
         self._connections: dict[str, WebSocket] = {}
 
-    async def connect(self, websocket: WebSocket, *, token: str | None = None) -> str:
+    async def connect(self, websocket: WebSocket) -> str:
         """Connect a new client and return the connection ID"""
         await websocket.accept()
 
@@ -43,7 +43,6 @@ class ConnectionManager:
         # Send to the user the first render of the app
         # NOTE: The render should be fast and not block the event loop
         obj = self._apps[connection_id]._render()
-        print(json.dumps(obj, indent=2))
         await websocket.send_text(json.dumps(obj))
 
         # Save the connection and return the ID
@@ -52,14 +51,8 @@ class ConnectionManager:
 
     def disconnect(self, connection_id: str):
         """Disconnect a connection by its ID"""
-        # TODO: Save the app given the connection ID
         del self._apps[connection_id]
         del self._connections[connection_id]
-
-    # async def broadcast(self, message: str):
-    #     """Broadcast a message to all active connections"""
-    #     for connection in self._connections.values():
-    #         await connection.send_text(message)
 
     async def message(self, connection_id: str, message: str):
         """Send a message to a specific connection"""

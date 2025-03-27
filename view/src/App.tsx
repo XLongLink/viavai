@@ -1,4 +1,4 @@
-import type { TypeMain, TypeComponent } from "@/types"
+import type { TypeComponent } from "@/types"
 import { ThemeProvider } from "@/components/theme-provider"
 import { useWebSocket } from './hooks/use-socket.tsx'
 import { Sidebar } from "@/components/sidebar"
@@ -17,7 +17,7 @@ import { Button, TypeButton } from "@/components/ui/button"
 //     );
 // });
 
-const UIRenderer = ({ main }: { main: TypeMain }) => {
+const UIRenderer = ({ children }: { children: TypeComponent[] }) => {
     const RenderComponent = (children: TypeComponent | string, index: number) => {
         if (typeof children === 'string') {
             return <> {children} </>
@@ -38,15 +38,15 @@ const UIRenderer = ({ main }: { main: TypeMain }) => {
         return null;
     };
 
-    return <div>{main.children.map(RenderComponent)}</div>;
+    return <div>{children.map(RenderComponent)}</div>;
 };
 
 
 export default function App() {
-    const { page, nav, main } = useWebSocket()
+    const { page, sidebar } = useWebSocket()
 
     // Todo if the page content is not loaded, then place a skeleton
-    if (!page || !main) return <></>
+    if (!page) return <></>
 
     return (
         <>
@@ -55,7 +55,7 @@ export default function App() {
 
             <ThemeProvider>
                 <SidebarProvider>
-                    <Sidebar nav={nav} />
+                    <Sidebar nav={sidebar} />
                     <SidebarInset>
                         <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
                             <div className="flex items-center gap-2 px-4">
@@ -68,7 +68,7 @@ export default function App() {
                             </div>
                         </header>
                         <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
-                            <UIRenderer main={main} />
+                            <UIRenderer children={page.children} />
                             <Dev />
                             <div className="grid auto-rows-min gap-4 md:grid-cols-3">
                                 <div className="aspect-video rounded-xl bg-muted/50" />

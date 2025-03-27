@@ -1,4 +1,4 @@
-import type { TypeNav, TypeSection, TypeItem } from "@/types"
+import type { TypeSidebar, TypeSection, TypeItem } from "@/types"
 import type { IconName } from "lucide-react/dynamic";
 import { Link } from "@/components/link"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
@@ -137,7 +137,7 @@ function SidebarCollapse({ section }: { section: TypeSection }) {
 }
 
 
-export function Sidebar({ nav }: { nav?: TypeNav }) {
+export function Sidebar({ nav }: { nav?: TypeSidebar }) {
     // TODO: Add skeleton loading state
     if (!nav) {
         return (

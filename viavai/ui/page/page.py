@@ -5,7 +5,7 @@ from ..base import Base
 class Page(Base):
     """Base class for all pages"""
     title: str = "A ViaVai Page"
-    logo: str = "/images/logo.svg"
+    icon: str = "/images/logo.svg"
 
     # Page breadcrumb
     _breadcrumb: OrderedDict[str, str]
@@ -23,6 +23,8 @@ class Page(Base):
         
     def _render(self) -> dict:
         return {
+            "icon": self.icon,
+            "title": self.title,
             "children": [component._render() for component in self._components]
         }
 

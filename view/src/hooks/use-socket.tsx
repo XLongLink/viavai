@@ -1,12 +1,8 @@
 import { useEffect, useState } from 'react';
-import type { TypeNav, TypePage, TypeMain } from "@/types"
+import type { TypeSidebar, TypePage } from "@/types";
 
 let socket: WebSocket | null = null;
-let page: TypePage | undefined = undefined;
-let nav: TypeNav | undefined = undefined;
-let main: TypeMain | undefined = undefined;
-
-let listeners: ((page: TypePage | undefined, nav: TypeNav | undefined, main: TypeMain | undefined) => void)[] = [];
+let listeners: ((page: TypePage | undefined, sidebar: TypeSidebar | undefined) => void)[] = [];
 let retryInterval: NodeJS.Timeout | null = null;
 
 declare global {
@@ -27,11 +23,14 @@ function connectWebSocket(url: string) {
     };
 
     socket.onmessage = (event) => {
-        const updatedData = JSON.parse(event.data);
-        if (updatedData.page !== undefined) page = updatedData.page;
-        if (updatedData.nav !== undefined) nav = updatedData.nav;
-        if (updatedData.main !== undefined) main = updatedData.main;
-        listeners.forEach((cb) => cb(page, nav, main));
+        try {
+            const updatedData = JSON.parse(event.data);
+            const page: TypePage | undefined = updatedData.page;
+            const sidebar: TypeSidebar | undefined = updatedData.sidebar;
+            listeners.forEach((cb) => cb(page, sidebar));
+        } catch (err) {
+            console.error('Failed to parse WebSocket message', err);
+        }
     };
 
     socket.onerror = (error) => {
@@ -50,10 +49,10 @@ function connectWebSocket(url: string) {
     };
 }
 
-
 export function initializeWebSocket(url: string) {
-    if (socket) return;
-    connectWebSocket(url);
+    if (!socket || socket.readyState === WebSocket.CLOSED) {
+        connectWebSocket(url);
+    }
 }
 
 export function send(key: string, value: object) {
@@ -65,20 +64,16 @@ export function send(key: string, value: object) {
     }
 }
 
-export function subscribe(callback: (page: TypePage | undefined, nav: TypeNav | undefined, main: TypeMain | undefined) => void) {
+export function subscribe(callback: (page: TypePage | undefined, sidebar: TypeSidebar | undefined) => void) {
     listeners.push(callback);
-    callback(page, nav, main);
-
     return () => {
         listeners = listeners.filter((cb) => cb !== callback);
     };
 }
 
-
 export function useWebSocket() {
     const [page, setPage] = useState<TypePage | undefined>(undefined);
-    const [nav, setNav] = useState<TypeNav | undefined>(undefined);
-    const [main, setMain] = useState<TypeMain | undefined>(undefined);
+    const [sidebar, setSidebar] = useState<TypeSidebar | undefined>(undefined);
 
     useEffect(() => {
         if (!window.wsURL) {
@@ -88,13 +83,15 @@ export function useWebSocket() {
 
         initializeWebSocket(window.wsURL);
 
-        const unsubscribe = subscribe((page, nav, main) => {
-            setPage(page);
-            setNav(nav);
-            setMain(main);
+        const unsubscribe = subscribe((p, s) => {
+            setPage(p);
+            setSidebar(s);
         });
-        return unsubscribe;
+
+        return () => {
+            unsubscribe();
+        };
     }, []);
 
-    return { page, nav, main, send };
+    return { page, sidebar, send };
 }
