@@ -1,9 +1,11 @@
-from abc import ABC, abstractmethod
 from typing import get_type_hints
+import uuid
 
 
-class Base(ABC):
+class Base:
     """Base class for all components"""
+    id = str 
+
     def __init__(self, *args, **kwargs):
         for key, value in kwargs.items():
             if hasattr(self, key):
@@ -11,8 +13,9 @@ class Base(ABC):
 
     def __new__(cls, *args, **kwargs):
         instance = super().__new__(cls)
+        instance.id = str(uuid.uuid4())
         hints = get_type_hints(cls)
-        
+
         # Initialize class attributes based on their type hints
         for attr, attr_type in hints.items():
             if not hasattr(instance, attr):
@@ -20,9 +23,8 @@ class Base(ABC):
 
         return instance
     
-    @abstractmethod
     def _render(self) -> dict:
-        """Render the component into a pydantic model"""
+        """"""
 
     def _event(self, event: str) -> None:
         """Handle an event"""

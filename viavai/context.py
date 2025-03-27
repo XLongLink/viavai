@@ -4,7 +4,6 @@ from contextvars import ContextVar
 class UserContext:
     """The user context class is created for each user"""
     def __init__(self, user_id: str):
-        # TODO: If the user ID is a known one, load the user's data
         self.user_id = user_id
 
 

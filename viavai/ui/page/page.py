@@ -29,5 +29,3 @@ class Page(Base):
     def _event(self, event):
         return super()._event(event)
     
-
-
