@@ -1,4 +1,4 @@
-from viavai import Server, Page, Sidebar
+from viavai import Server, Page, Sidebar, state
 from example.pages import Initiation, Planning, Execution, Project, Home
 
 class MySidebar(Sidebar):

@@ -42,11 +42,32 @@ const UIRenderer = ({ children }: { children: TypeComponent[] }) => {
 };
 
 
+function PlaceHolder() {
+    return (
+        <ThemeProvider>
+            <SidebarProvider>
+                <Sidebar />
+                <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
+                    <div className="flex items-center gap-2 px-4">
+                        <SidebarTrigger className="-ml-1" />
+                        <Separator orientation="vertical" className="mr-2 h-4" />
+                        <Breadcrumb />
+                    </div>
+                    <div className="ml-auto mr-4">
+                        <ModeToggle />
+                    </div>
+                </header>
+
+            </SidebarProvider>
+        </ThemeProvider>
+    )
+}
+
 export default function App() {
-    const { page, sidebar } = useWebSocket()
+    const { page, sidebar, send } = useWebSocket()
 
     // Todo if the page content is not loaded, then place a skeleton
-    if (!page) return <></>
+    if (!page) return <PlaceHolder />
 
     return (
         <>
@@ -70,6 +91,9 @@ export default function App() {
                         <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
                             <UIRenderer children={page.children} />
                             <Dev />
+                            <Button onClick={() => {
+                                send('test', { test: 'test' })
+                            }}>Test</Button>
                             <div className="grid auto-rows-min gap-4 md:grid-cols-3">
                                 <div className="aspect-video rounded-xl bg-muted/50" />
                                 <div className="aspect-video rounded-xl bg-muted/50" />

@@ -5,6 +5,7 @@ class UserContext:
     """The user context class is created for each user"""
     def __init__(self, user_id: str):
         self.user_id = user_id
+        self.events = {}
 
 
 class Context(UserContext):
@@ -22,10 +23,10 @@ class Context(UserContext):
         return getattr(user_context, item)
 
 
-context = Context()
+state = Context()
 
 def get(key: str):
-    return getattr(context, key)
+    return getattr(state, key)
 
 def set(key: str, value):
-    setattr(context, key, value)
+    setattr(state, key, value)

@@ -8,7 +8,7 @@ class Sidebar(Base):
     subtitle: str = "Subtitle"
     logo: str = "logo.svg"
 
-    _sections: list[Section] = []
+    _sections: list[Section]
 
     def _render(self):
         return {

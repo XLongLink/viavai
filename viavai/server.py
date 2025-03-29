@@ -6,7 +6,7 @@ from starlette.routing import WebSocketRoute
 from starlette.websockets import WebSocket, WebSocketDisconnect
 from starlette.staticfiles import StaticFiles
 from starlette.applications import Starlette
-from .context import context, UserContext
+from .context import state, UserContext
 from .decorators import get_class
 asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
 from .ui import Page, Sidebar
@@ -29,6 +29,7 @@ class Server(Starlette):
 
         def _event(self, message):
             print(message)
+            print(state.user_id)
             pass
 
     def __init__(self):
@@ -60,7 +61,7 @@ class Server(Starlette):
 
         # Create the user context for the current connection
         user_context = UserContext(connection_id)
-        context.__var__.set(user_context)
+        state.__var__.set(user_context)
 
         # Initialize the App for the current connection
         # The initialization is done on a separate thread in case of heavy computation
@@ -70,7 +71,7 @@ class Server(Starlette):
         # Send to the user the first render of the app
         # NOTE: The render should be fast and not block the event loop
         obj = self._apps[connection_id]._render()
-        print(json.dumps(obj, indent=2))
+        #print(json.dumps(obj, indent=2))
         await websocket.send_text(json.dumps(obj))
 
         # Save the connection and return the ID
@@ -80,17 +81,16 @@ class Server(Starlette):
             while True:
                 data = await websocket.receive_text()
                 message = json.loads(data)
-
                 app = self._apps[connection_id]
                 obj = await asyncio.to_thread(self.handle_message, message, app)
-                print(json.dumps(obj, indent=2))
+                # print(json.dumps(obj, indent=2))
                 await self._connections[connection_id].send_text(json.dumps(obj))
 
         except WebSocketDisconnect:
             del self._apps[connection_id]
             del self._connections[connection_id]
 
-    async def handle_message(self, message: str, app: App):
+    def handle_message(self, message: str, app: App):
         """Send a message to a specific connection"""
         app._event(message)
         return app._render()

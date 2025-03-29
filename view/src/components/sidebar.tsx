@@ -1,6 +1,7 @@
 import type { TypeSidebar, TypeSection, TypeItem } from "@/types"
 import type { IconName } from "lucide-react/dynamic";
 import { Link } from "@/components/link"
+import { Skeleton } from "@/components/ui/skeleton"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Plus, ChevronDown } from 'lucide-react';
 import { DynamicIcon } from 'lucide-react/dynamic';
@@ -138,12 +139,41 @@ function SidebarCollapse({ section }: { section: TypeSection }) {
 
 
 export function Sidebar({ nav }: { nav?: TypeSidebar }) {
-    // TODO: Add skeleton loading state
     if (!nav) {
         return (
-            <Side collapsible="icon" />
+            <Side collapsible="icon">
+                <SidebarHeader>
+                    <SidebarMenu>
+                        <div className="flex items-center space-x-2">
+                            <Skeleton className="h-12 w-16 rounded-full" />
+                            <div className="space-y-2 w-full">
+                                <Skeleton className="h-4 w-full" />
+                                <Skeleton className="h-3 w-full " />
+                            </div>
+                        </div>
+                    </SidebarMenu>
+                </SidebarHeader>
+                <SidebarContent>
+                    <SidebarGroup>
+                        <SidebarGroupLabel>
+                            <Skeleton className="h-4 w-[100px]" />
+                        </SidebarGroupLabel>
+                        <SidebarMenu>
+                            {Array.from({ length: 3 }).map((_, index) => (
+                                <SidebarMenuItem key={index}>
+                                    <SidebarMenuButton>
+                                        <Skeleton className="h-4 w-[150px]" />
+                                    </SidebarMenuButton>
+                                </SidebarMenuItem>
+                            ))}
+                        </SidebarMenu>
+                    </SidebarGroup>
+                </SidebarContent>
+                <SidebarRail />
+            </Side>
         )
     };
+
 
     return (
         <Side collapsible="icon">

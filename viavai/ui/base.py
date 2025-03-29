@@ -1,5 +1,5 @@
-from typing import get_type_hints
 import uuid
+from typing import get_type_hints
 
 
 class Base:
