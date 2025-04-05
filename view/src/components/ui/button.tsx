@@ -3,6 +3,7 @@ import { cn } from "@/lib/utils"
 import { Slot } from "@radix-ui/react-slot"
 import { cva, type VariantProps } from "class-variance-authority"
 import type { TypeComponent } from "@/types"
+import { useWebSocket } from '@/hooks/use-socket.tsx'
 
 
 const buttonVariants = cva(
@@ -52,10 +53,23 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     ({ className, variant, size, asChild = false, ...props }, ref) => {
         const Comp = asChild ? Slot : "button"
 
+        const { send } = useWebSocket()
+
         return (
             <Comp
                 className={cn(buttonVariants({ variant, size, className }))}
                 ref={ref}
+                onClick={(e) => {
+                    if (props.onClick) {
+                        props.onClick(e)
+                    }
+
+                    // Send the button click event to the server
+                    if (props.id) {
+                        send(props.id, { type: "click" })
+                    }
+
+                }}
                 {...props}
             />
         )

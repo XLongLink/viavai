@@ -2,6 +2,7 @@ import os
 import json
 import uuid
 import asyncio
+import logging
 from starlette.routing import WebSocketRoute
 from starlette.websockets import WebSocket, WebSocketDisconnect
 from starlette.staticfiles import StaticFiles
@@ -12,14 +13,19 @@ asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
 from .ui import Page, Sidebar
 
 
+logger = logging.getLogger("server")
+
 class Server(Starlette):
     class App:
-        _page: Page = Page()
+        """A ViaVai Application handle multiple pages and a single sidebar"""
+
+        _page: Page
         _pages: list[Page] = []
         _side: Sidebar = Sidebar
 
         def __init__(self):
             self._side = self.__class__._side()
+            self._page = self.__class__._pages[0]()
 
         def _render(self) -> dict:
             return {
@@ -27,10 +33,9 @@ class Server(Starlette):
                 "sidebar": self._side._render()
             }
 
-        def _event(self, message):
-            print(message)
-            print(state.user_id)
-            pass
+        def _event(self, message: dict):
+            for key, value in message.items():
+                state.call_event(key, **value)
 
     def __init__(self):
         self._apps: dict[str, Server.App] = {}
@@ -86,9 +91,15 @@ class Server(Starlette):
                 # print(json.dumps(obj, indent=2))
                 await self._connections[connection_id].send_text(json.dumps(obj))
 
-        except WebSocketDisconnect:
-            del self._apps[connection_id]
-            del self._connections[connection_id]
+        except (WebSocketDisconnect, ConnectionResetError, asyncio.CancelledError) as e:
+            logger.info(f"Connection closed: {connection_id} ({type(e).__name__})")
+
+        except Exception as e:
+            logger.exception(f"Unhandled exception in websocket connection: {connection_id}")
+
+        finally:
+            self._apps.pop(connection_id, None)
+            self._connections.pop(connection_id, None)
 
     def handle_message(self, message: str, app: App):
         """Send a message to a specific connection"""

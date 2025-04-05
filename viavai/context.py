@@ -7,6 +7,14 @@ class UserContext:
         self.user_id = user_id
         self.events = {}
 
+    def add_event(self, component_id: str, callback: callable):
+        """Add an event to the user context"""
+        self.events[component_id] = callback
+
+    def call_event(self, component_id: str, **event):
+        """Trigger an event for the user context"""
+        if component_id in self.events:
+            self.events[component_id](event)
 
 class Context(UserContext):
     """The context class is created once for the entire application"""

@@ -1,4 +1,3 @@
-from collections import OrderedDict
 from ..base import Base
 
 
@@ -8,23 +7,26 @@ class Page(Base):
     icon: str = "/images/logo.svg"
 
     # Page breadcrumb
-    _breadcrumb: OrderedDict[str, str]
+    _breadcrumb: dict[str, str]
 
     # Page elements
     _components: list[Base]
 
     def add_breadcrumb(self, name: str, href: str) -> None:
         if self._breadcrumb is None:
-            self._breadcrumb = OrderedDict()
+            self._breadcrumb = dict()
         self._breadcrumb[name] = href
 
-    def add_component(self, component: Base) -> None:
+    def add(self, component: Base) -> None:
         self._components.append(component)
         
     def _render(self) -> dict:
         return {
             "icon": self.icon,
             "title": self.title,
+            "breadcrumb": [
+                {"name": name, "href": href} for name, href in self._breadcrumb.items()
+            ] if self._breadcrumb else [],
             "children": [component._render() for component in self._components]
         }
 

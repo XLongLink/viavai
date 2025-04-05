@@ -1,6 +1,6 @@
 import type { TypeComponent } from "@/types"
 import { ThemeProvider } from "@/components/theme-provider"
-import { useWebSocket } from './hooks/use-socket.tsx'
+import { useWebSocket } from '@/hooks/use-socket.tsx'
 import { Sidebar } from "@/components/sidebar"
 import { Breadcrumb } from "@/components/breadcrumb"
 import { Separator } from "@/components/ui/separator"
@@ -68,6 +68,8 @@ export default function App() {
 
     // Todo if the page content is not loaded, then place a skeleton
     if (!page) return <PlaceHolder />
+
+    console.log('page', page)
 
     return (
         <>

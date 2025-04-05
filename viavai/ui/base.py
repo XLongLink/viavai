@@ -1,5 +1,6 @@
 import uuid
 from typing import get_type_hints
+from ..context import state
 
 
 class Base:
@@ -20,6 +21,9 @@ class Base:
         for attr, attr_type in hints.items():
             if not hasattr(instance, attr):
                 setattr(instance, attr, attr_type())
+
+        # Attach the class to the global event state
+        state.add_event(instance.id, instance._event)
 
         return instance
     

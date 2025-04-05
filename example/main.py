@@ -1,5 +1,22 @@
 from viavai import Server, Page, Sidebar, state
-from example.pages import Initiation, Planning, Execution, Project, Home
+from viavai.ui import Button
+
+
+class MyPage(Page):
+    title = "My Page"
+    icon = "home"
+
+    def __init__(self):
+        self.add_breadcrumb("Home", href="/")
+        self.add_breadcrumb("My Page", href="/my-page")
+
+        btn = Button("Click me!")
+        btn.on_click(self.handle_click)
+        self.add(btn)
+
+    def handle_click(self, event):
+        print("Button clicked!")
+
 
 class MySidebar(Sidebar):
     def __init__(self):
@@ -15,8 +32,4 @@ class MySidebar(Sidebar):
 
 server = Server()
 server.register(MySidebar)
-server.register(Initiation)
-server.register(Planning)
-server.register(Execution)
-server.register(Project)
-server.register(Home)
+server.register(MyPage)
