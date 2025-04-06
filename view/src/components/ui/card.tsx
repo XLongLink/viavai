@@ -1,117 +1,66 @@
 import * as React from "react"
-
 import { cn } from "@/lib/utils"
+import { cva, VariantProps } from "class-variance-authority"
 
-const Card = React.forwardRef<
-    HTMLDivElement,
-    { className?: string; border?: boolean } & React.HTMLAttributes<HTMLDivElement>
->(({ className, border = false, ...props }, ref) => {
-    return (
-        <div
-            ref={ref}
-            className={cn(
-                "rounded-lg bg-card text-card-foreground",
-                border ? "border shadow-sm " : "",
-                className
-            )}
-            {...props}
-        />
-    )
-})
-Card.displayName = "Card"
+const cardVariants = cva(
+    "rounded-lg bg-card text-card-foreground p-6 transition-shadow duration-200 ease-in-out",
+    {
+        variants: {
+            variant: {
+                solid: "border shadow-sm",
+                ghost: "border-none shadow-none",
+            },
+            content: {
+                left: "text-left",
+                center: "text-center",
+                right: "text-right",
+            },
+        },
+        defaultVariants: {
+            variant: "solid",
+            content: "left",
+        },
+    }
+)
 
-const CardAction = React.forwardRef<
-    HTMLDivElement,
-    React.HTMLAttributes<HTMLDivElement>
->(({ className, ...props }, ref) => (
-    <div
-        ref={ref}
-        className={cn("flex justify-end items-center", className)}
-        {...props}
-    />
-))
-CardAction.displayName = "CardAction"
-// Augment the type definition for CardAction
-interface CardActionType extends React.ForwardRefExoticComponent<React.HTMLAttributes<HTMLDivElement> & React.RefAttributes<HTMLDivElement>> {
-    isCardAction?: boolean;
+interface CardProps extends VariantProps<typeof cardVariants> {
+    title?: string
+    description?: string
+    children?: React.ReactNode
+    className?: string;
 }
 
-const CardActionTyped = CardAction as CardActionType;
-CardActionTyped.isCardAction = true;
+const Card = ({
+    className,
+    title,
+    description,
+    children,
+    variant,
+    content,
+    ...props
+}: CardProps) => {
+    const showHeader = title || description
 
-
-const CardHeader = React.forwardRef<
-    HTMLDivElement,
-    React.HTMLAttributes<HTMLDivElement> & { children: React.ReactNode }
->(({ className, children, ...props }, ref) => {
-    // Filter out CardAction children based on the custom property
-    const actionChildren = React.Children.toArray(children).filter(
-        (child) =>
-            React.isValidElement(child) &&
-            typeof child.type !== 'string' &&
-            (child.type as CardActionType)?.isCardAction
-    );
-    // All other children
-    const mainChildren = React.Children.toArray(children).filter(
-        (child) =>
-            !(
-                React.isValidElement(child) && (child.type as CardActionType)?.isCardAction
-            )
-    );
+    const contentClass = cn(
+        !showHeader && "flex flex-col justify-center h-full",
+        showHeader && "mt-4"
+    )
 
     return (
-        <div ref={ref} className={cn("flex justify-between p-6", className)} {...props}>
-            <div className="space-y-1.5">{mainChildren}</div>
-            {actionChildren}
+        <div className={cn(cardVariants({ variant, content }), className)} {...props}>
+            {showHeader && (
+                <>
+                    {title && <div className="text-3xl font-semibold leading-none tracking-tight">{title}</div>}
+                    {description && <div className="text-sm text-muted-foreground mt-1.5">{description}</div>}
+                </>
+            )}
+            <div className={contentClass}>
+                {children}
+            </div>
         </div>
-    );
-});
-CardHeader.displayName = "CardHeader";
+    )
+}
 
-const CardTitle = React.forwardRef<
-    HTMLDivElement,
-    React.HTMLAttributes<HTMLDivElement>
->(({ className, ...props }, ref) => (
-    <div
-        ref={ref}
-        className={cn("text-3xl font-semibold leading-none tracking-tight", className)}
-        {...props}
-    />
-))
-CardTitle.displayName = "CardTitle"
+Card.displayName = "Card"
 
-const CardDescription = React.forwardRef<
-    HTMLDivElement,
-    React.HTMLAttributes<HTMLDivElement>
->(({ className, ...props }, ref) => (
-    <div
-        ref={ref}
-        className={cn("text-sm text-muted-foreground", className)}
-        {...props}
-    />
-))
-CardDescription.displayName = "CardDescription"
-
-const CardContent = React.forwardRef<
-    HTMLDivElement,
-    React.HTMLAttributes<HTMLDivElement>
->(({ className, ...props }, ref) => (
-    <div ref={ref} className={cn("p-6 pt-0", className)} {...props} />
-))
-CardContent.displayName = "CardContent"
-
-const CardFooter = React.forwardRef<
-    HTMLDivElement,
-    React.HTMLAttributes<HTMLDivElement>
->(({ className, ...props }, ref) => (
-    <div
-        ref={ref}
-        className={cn("flex items-center p-6 pt-0", className)}
-        {...props}
-    />
-))
-CardFooter.displayName = "CardFooter"
-
-
-
-export { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent, CardAction }
+export { Card }

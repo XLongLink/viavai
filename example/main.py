@@ -1,5 +1,5 @@
 from viavai import Server, Page, Sidebar, state
-from viavai.ui import Button, Text
+from viavai.ui import Button, Text, Card
 
 
 class MyPage(Page):
@@ -17,6 +17,9 @@ class MyPage(Page):
         self.add(Text("Hello world twice!", variant="title", size="2xl"))
         self.add(Text("Hello world!", variant="subtitle", size="lg"))
 
+        crd = Card("Card Title", "Card description", variant="ghost")
+        crd.add(Text("Card content"))
+        self.add(crd)
         
     def handle_click(self, event):
         print("Button clicked!")

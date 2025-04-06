@@ -6,11 +6,10 @@ import { Breadcrumb } from "@/components/breadcrumb"
 import { Separator } from "@/components/ui/separator"
 import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
 import { ModeToggle } from "@/components/mode-toggle"
-import { Dev } from "./dev.tsx"
 
 import { Text } from "@/components/ui/text.tsx"
 import { Button, TypeButton } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardAction } from "@/components/ui/card"
+import { Card } from "@/components/ui/card"
 
 // const MemoButton = React.memo<{ text: string }>(({ text }) => {
 //     return (
@@ -50,6 +49,18 @@ const UIRenderer = ({ children }: { children: TypeComponent[] }) => {
             );
         }
 
+        if (children.type === 'card') {
+            const card = children as TypeComponent;
+            return (
+                <Card
+                    key={index}
+                    {...(card.props || {})}
+                >
+                    {Array.isArray(card.children) ? card.children.map((child, index) => RenderComponent(child, index)) : card.children}
+                </Card>
+            );
+        }
+
         return null;
     };
 
@@ -79,7 +90,7 @@ function PlaceHolder() {
 }
 
 export default function App() {
-    const { page, sidebar, send } = useWebSocket()
+    const { page, sidebar } = useWebSocket()
 
     // Todo if the page content is not loaded, then place a skeleton
     if (!page) return <PlaceHolder />
@@ -117,21 +128,7 @@ export default function App() {
                                 <div className="aspect-video rounded-xl bg-muted/50" />
                             </div>
                             <div className="min-h-[100vh] flex-1 rounded-xl bg-muted/50 md:min-h-min" /> 
-                            
-
-                            { /*
-
-                            <Card>
-                                <CardHeader>
-                                    <CardTitle>GPU Deployment</CardTitle>
-                                    <CardDescription>Select a GPU instance for your workloads</CardDescription>
-                                </CardHeader>
-                                <CardContent>
-                                    <Button> Test </Button>
-                                </CardContent>
-                            </Card>
-                            */}
-
+                                     */}
                         </div>
                     </SidebarInset>
                 </SidebarProvider>

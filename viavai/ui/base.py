@@ -7,7 +7,7 @@ class Base:
     """Base class for all components"""
     __id__ = str
     __type__ = "component"
-    __children__: Union[str, "Base", list["Base"]] = None
+    __children__: list[Union["Base", str]] = []
 
     def __init__(self, *args, **kwargs):
         for key, value in kwargs.items():
@@ -17,6 +17,7 @@ class Base:
     def __new__(cls, *args, **kwargs):
         instance = super().__new__(cls)
         instance.__id__ = str(uuid.uuid4())
+        instance.__children__ = []
         hints = get_type_hints(cls)
 
         # Initialize class attributes based on their type hints

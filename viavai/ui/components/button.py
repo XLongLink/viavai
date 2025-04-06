@@ -1,5 +1,4 @@
 from ..base import Base
-from ...context import state
 
 
 class Button(Base):

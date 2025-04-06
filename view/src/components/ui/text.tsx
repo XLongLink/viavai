@@ -4,6 +4,7 @@ import { Slot } from "@radix-ui/react-slot"
 import { cva, type VariantProps } from "class-variance-authority"
 import type { TypeComponent } from "@/types"
 
+
 const textVariants = cva(
     "text-foreground",
     {
@@ -54,7 +55,7 @@ const Text = React.forwardRef<HTMLElement, TextProps>(({ className, variant, siz
 
     return (
         <Comp
-            className={cn("inline", textVariants({ variant, size, className }))}
+            className={cn("block", textVariants({ variant, size, className }))}
             ref={ref}
             {...props}
         />
