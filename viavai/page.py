@@ -1,8 +1,13 @@
-from ..base import Base
+import re
+from .ui.base import Base
 
 
 class Page(Base):
     """Base class for all pages"""
+
+    # URL pattern for the page, to be set by the decorator
+    __url__: re.Pattern = None
+    
     title: str = "A ViaVai Page"
     icon: str = "/images/logo.svg"
 

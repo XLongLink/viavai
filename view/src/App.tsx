@@ -2,7 +2,7 @@ import type { TypeComponent } from "@/types"
 import { ThemeProvider } from "@/components/theme-provider"
 import { useWebSocket } from '@/hooks/use-socket.tsx'
 import { Sidebar } from "@/components/sidebar"
-import { Breadcrumb } from "@/components/breadcrumb"
+import { Breadcrumb } from "@/components/ui/breadcrumb"
 import { Separator } from "@/components/ui/separator"
 import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
 import { ModeToggle } from "@/components/mode-toggle"

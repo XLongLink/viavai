@@ -7,7 +7,7 @@ interface InterceptLinkProps extends React.AnchorHTMLAttributes<HTMLAnchorElemen
 }
 
 export function Link({ href, children, onClick, ...rest }: InterceptLinkProps) {
-    const { setHref } = useWebSocket()
+    const { send } = useWebSocket()
 
     const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
         if (onClick) onClick(e);
@@ -24,7 +24,7 @@ export function Link({ href, children, onClick, ...rest }: InterceptLinkProps) {
         e.preventDefault();
         window.history.pushState({}, '', href);
         window.dispatchEvent(new PopStateEvent('popstate'));
-        if (href) setHref(href);
+        if (href) send('href', { href });
     };
 
     return (

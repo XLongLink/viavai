@@ -8,9 +8,17 @@ from starlette.websockets import WebSocket, WebSocketDisconnect
 from starlette.staticfiles import StaticFiles
 from starlette.applications import Starlette
 from .context import state, UserContext
-from .decorators import get_class
 asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
-from .ui import Page, Sidebar
+from .ui import Sidebar, Text
+from .page import Page
+
+class PageNotFound(Page):
+    title = "404 - Page Not Found"
+    icon = "home"
+
+    def __init__(self):
+        txt = Text("The page you are looking for does not exist.", variant="title", size="3xl")
+        self.add(txt)
 
 
 logger = logging.getLogger("server")
@@ -33,7 +41,19 @@ class Server(Starlette):
                 "sidebar": self._side.__render__()
             }
 
-        def _event(self, message: dict):
+        def __event__(self, message: dict):
+            """Handle a message from the client"""
+            if href := message.get("href"):
+                # If the message is a page change, update the page
+                if href != self._page.__url__:
+                    href = href["href"]
+                    for page in self.__class__._pages:
+                        if match := page.__url__.match(href):
+                            self._page = page(**match.groupdict())
+                            break
+                    else:
+                        self._page = PageNotFound()
+
             for key, value in message.items():
                 state.call_event(key, **value)
 
@@ -103,5 +123,5 @@ class Server(Starlette):
 
     def handle_message(self, message: str, app: App):
         """Send a message to a specific connection"""
-        app._event(message)
+        app.__event__(message)
         return app.__render__()

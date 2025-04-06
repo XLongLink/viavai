@@ -1,7 +1,8 @@
 from viavai import Server, Page, Sidebar, state
 from viavai.ui import Button, Text, Card
+from viavai.api import url
 
-
+@url("/")
 class MyPage(Page):
     title = "My Page"
     icon = "home"
@@ -15,7 +16,7 @@ class MyPage(Page):
         self.add(btn)
 
         self.add(Text("Hello world twice!", variant="title", size="2xl"))
-        self.add(Text("Hello world!", variant="subtitle", size="lg"))
+        self.add(Text("Hello world!", variant="subtitle", size="7xl"))
 
         crd = Card("Card Title", "Card description", variant="ghost")
         crd.add(Text("Card content"))
