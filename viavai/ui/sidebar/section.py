@@ -13,9 +13,9 @@ class Section(Base):
         self.items.append(item)
         return item
 
-    def _render(self) -> dict:
+    def __render__(self) -> dict:
         return {
             "name": self.name,
-            "items": [item._render() for item in self.items],
+            "items": [item.__render__() for item in self.items],
             "variant": self.variant
         }

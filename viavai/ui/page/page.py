@@ -20,16 +20,15 @@ class Page(Base):
     def add(self, component: Base) -> None:
         self._components.append(component)
         
-    def _render(self) -> dict:
+    def __render__(self) -> dict:
         return {
             "icon": self.icon,
             "title": self.title,
             "breadcrumb": [
                 {"name": name, "href": href} for name, href in self._breadcrumb.items()
             ] if self._breadcrumb else [],
-            "children": [component._render() for component in self._components]
+            "children": [
+                component.__render__() for component in self._components
+            ]
         }
-
-    def _event(self, event):
-        return super()._event(event)
     

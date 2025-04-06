@@ -13,10 +13,10 @@ class Item(Base):
         self.items.append(subitem)
         return subitem
     
-    def _render(self) -> dict:
+    def __render__(self) -> dict:
         return {
             "name": self.name,
             "icon": self.icon,
             "href": self.href,
-            "items": [subitem._render() for subitem in self.items]
+            "items": [subitem.__render__() for subitem in self.items]
         }

@@ -27,10 +27,10 @@ class Server(Starlette):
             self._side = self.__class__._side()
             self._page = self.__class__._pages[0]()
 
-        def _render(self) -> dict:
+        def __render__(self) -> dict:
             return {
-                "page": self._page._render(),
-                "sidebar": self._side._render()
+                "page": self._page.__render__(),
+                "sidebar": self._side.__render__()
             }
 
         def _event(self, message: dict):
@@ -75,7 +75,7 @@ class Server(Starlette):
 
         # Send to the user the first render of the app
         # NOTE: The render should be fast and not block the event loop
-        obj = self._apps[connection_id]._render()
+        obj = self._apps[connection_id].__render__()
         #print(json.dumps(obj, indent=2))
         await websocket.send_text(json.dumps(obj))
 

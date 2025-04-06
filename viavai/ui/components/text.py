@@ -1,6 +1,5 @@
 from typing import Literal
 from ..base import Base
-from ...context import state
 
 type ButtonVariant = Literal[
     "base",
@@ -29,21 +28,14 @@ type ButtonSize = Literal[
 
 class Text(Base):
     """A button component"""
-    text: str
-    variant: ButtonVariant = "destructive"
-    size: ButtonSize = "base"
+    __type__: str = "text"
+    __children__: str
+    
+    __size: ButtonSize = "base"
+    __variant: ButtonVariant = "destructive"
 
-    def __init__(self, text: str):
-        self.text = text
-
-    def _render(self) -> dict:
-        return {
-            "type": "text",
-            "props": {
-                "id": self.id,
-                "variant": self.variant,
-                "size": self.size,
-            },
-            "children": self.text
-        }
+    def __init__(self, text: str, variant: ButtonVariant = "base", size: ButtonSize = "base"):
+        self.__size = size
+        self.__variant = variant
+        self.__children__ = text
 

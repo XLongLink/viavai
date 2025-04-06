@@ -5,7 +5,7 @@ import { cva, type VariantProps } from "class-variance-authority"
 import type { TypeComponent } from "@/types"
 
 const textVariants = cva(
-    "block text-foreground",
+    "text-foreground",
     {
         variants: {
             variant: {
@@ -54,13 +54,12 @@ const Text = React.forwardRef<HTMLElement, TextProps>(({ className, variant, siz
 
     return (
         <Comp
-            className={cn(textVariants({ variant, size, className }))}
+            className={cn("inline", textVariants({ variant, size, className }))}
             ref={ref}
             {...props}
         />
     )
-}
-)
+})
 
 Text.displayName = "Text"
 

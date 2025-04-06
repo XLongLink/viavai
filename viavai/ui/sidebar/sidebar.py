@@ -10,12 +10,12 @@ class Sidebar(Base):
 
     _sections: list[Section]
 
-    def _render(self):
+    def __render__(self):
         return {
             "title": self.title,
             "subtitle": self.subtitle,
             "logo": self.logo,
-            "sections": [section._render() for section in self._sections]
+            "sections": [section.__render__() for section in self._sections]
         }
     
     def add_section(self, name: str, variant: str = "default") -> Section:

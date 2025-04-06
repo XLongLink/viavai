@@ -7,7 +7,7 @@ class SubItem(Base):
     icon: str | None = None
     href: str | None = None
 
-    def _render(self) -> dict:
+    def __render__(self) -> dict:
         return {
             "name": self.name,
             "icon": self.icon,

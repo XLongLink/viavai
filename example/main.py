@@ -14,9 +14,9 @@ class MyPage(Page):
         btn.on_click(self.handle_click)
         self.add(btn)
 
-        txt = Text("Hello world twice!")
-        txt.size = "9xl"
-        self.add(txt)
+        self.add(Text("Hello world twice!", variant="title", size="2xl"))
+        self.add(Text("Hello world!", variant="subtitle", size="lg"))
+
         
     def handle_click(self, event):
         print("Button clicked!")
