@@ -108,30 +108,6 @@ export default function App() {
                         <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
                             <UIRenderer children={page.children} />
 
-                            <Text variant="title" size="2xl">
-                                Welcome to the Dashboard
-                            </Text>
-
-                            <Text variant="subtitle" size="lg">
-                                Manage your preferences below
-                            </Text>
-
-                            <Text variant="underline" size="base" className="cursor-pointer">
-                                Learn more
-                            </Text>
-
-                            <Text variant="muted" size="sm">
-                                Last updated 2 hours ago
-                            </Text>
-
-                            <Text variant="italic" size="base">
-                                This is an italic note.
-                            </Text>
-
-                            <Text asChild variant="subtitle" size="lg">
-                                <p>This is a paragraph with subtitle style.</p>
-                            </Text>
-
                             {/* <Dev /> */}
 
                             { /*

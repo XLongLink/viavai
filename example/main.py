@@ -1,5 +1,5 @@
 from viavai import Server, Page, Sidebar, state
-from viavai.ui import Button
+from viavai.ui import Button, Text
 
 
 class MyPage(Page):
@@ -14,6 +14,10 @@ class MyPage(Page):
         btn.on_click(self.handle_click)
         self.add(btn)
 
+        txt = Text("Hello world twice!")
+        txt.size = "9xl"
+        self.add(txt)
+        
     def handle_click(self, event):
         print("Button clicked!")
 

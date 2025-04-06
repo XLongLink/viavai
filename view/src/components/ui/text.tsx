@@ -9,6 +9,7 @@ const textVariants = cva(
     {
         variants: {
             variant: {
+                default: "text-base",
                 title: "font-bold leading-tight",
                 subtitle: "font-semibold text-muted-foreground",
                 underline: "underline decoration-primary underline-offset-4",
@@ -16,23 +17,29 @@ const textVariants = cva(
                 italic: "italic",
             },
             size: {
+                xs: "text-xs",
                 sm: "text-sm",
                 base: "text-base",
                 lg: "text-lg",
                 xl: "text-xl",
                 "2xl": "text-2xl",
+                "3xl": "text-3xl",
+                "4xl": "text-4xl",
+                "5xl": "text-5xl",
+                "6xl": "text-6xl",
+                "7xl": "text-7xl",
+                "8xl": "text-8xl",
+                "9xl": "text-9xl",
             },
         },
         defaultVariants: {
-            variant: "base",
+            variant: "default",
             size: "base",
         },
     }
 )
 
-export interface TextProps
-    extends React.HTMLAttributes<HTMLElement>,
-    VariantProps<typeof textVariants> {
+export interface TextProps extends React.HTMLAttributes<HTMLElement>, VariantProps<typeof textVariants> {
     asChild?: boolean
 }
 
@@ -42,18 +49,17 @@ export interface TypeText extends TypeComponent {
     children: string;
 }
 
-const Text = React.forwardRef<HTMLElement, TextProps>(
-    ({ className, variant, size, asChild = false, ...props }, ref) => {
-        const Comp = asChild ? Slot : "span"
+const Text = React.forwardRef<HTMLElement, TextProps>(({ className, variant, size, asChild = false, ...props }, ref) => {
+    const Comp = asChild ? Slot : "span"
 
-        return (
-            <Comp
-                className={cn(textVariants({ variant, size, className }))}
-                ref={ref}
-                {...props}
-            />
-        )
-    }
+    return (
+        <Comp
+            className={cn(textVariants({ variant, size, className }))}
+            ref={ref}
+            {...props}
+        />
+    )
+}
 )
 
 Text.displayName = "Text"
