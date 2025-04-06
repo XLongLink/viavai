@@ -66,12 +66,12 @@ The application will feature a layout with a menu on the left that includes the 
 From [Shadcn-Sidebar](https://ui.shadcn.com/docs/components/sidebar), uses [lucide-react](https://lucide.dev/guide/packages/lucide-react) for the icons. It
 features:
 
-- Application name and Logo (SidebarHeader)
-- User avatar and name (SidebarFooter)
-- Groups (collapsible)
-- Items (name and icon)
-- SubItems
-- Can have badge / action / menu on the right
+-   Application name and Logo (SidebarHeader)
+-   User avatar and name (SidebarFooter)
+-   Groups (collapsible)
+-   Items (name and icon)
+-   SubItems
+-   Can have badge / action / menu on the right
 
 <br />
 
@@ -108,11 +108,11 @@ context.create_modal("Hello World")
 
 The `core` module contains a list of decorators that allows to create custom events, signals and threads.
 
-- `threaded` decorator allows to run a function in a separate thread, all the clients share the same async pool on a single thread. Calling a function with this decorator will not block the main thread.
+-   `threaded` decorator allows to run a function in a separate thread, all the clients share the same async pool on a single thread. Calling a function with this decorator will not block the main thread.
 
-- `signal` decorator allows to create a custom signal that can be emitted from any part of the application.
+-   `signal` decorator allows to create a custom signal that can be emitted from any part of the application.
 
-- `url` decorator allows to create a custom page that with nested urls, see the Page section for more details.
+-   `url` decorator allows to create a custom page that with nested urls, see the Page section for more details.
 
 ```python
 from viavai import threaded, signal, url
@@ -307,5 +307,5 @@ The state of the frontend is always synced with the server, this is done using a
 ```
 
 ```
-pydantic2ts --module ./viavai/app.py --output ./view/src/types.ts
+uvicorn example.main:server -reload
 ```

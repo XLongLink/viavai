@@ -7,7 +7,7 @@ const cardVariants = cva(
     {
         variants: {
             variant: {
-                solid: "border shadow-sm",
+                solid: "border shadow-xs",
                 ghost: "border-none shadow-none",
             },
             content: {
