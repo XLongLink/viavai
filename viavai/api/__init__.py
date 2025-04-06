@@ -1,1 +1,1 @@
-from .url import url, get_class
+from .url import url

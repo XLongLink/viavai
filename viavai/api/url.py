@@ -1,8 +1,6 @@
 import re
 from ..page import Page
 
-# A global registry for (compiled regex, class) pairs.
-route_registry: list[tuple[re.Pattern, type]] = []
 
 def url(route):
     """
@@ -17,11 +15,3 @@ def url(route):
         cls.__url__ = re.compile(regex)
         return cls
     return decorator
-
-def get_class(href: str) -> type | None:
-    """Return the class that matches the given URL."""
-    for pattern, cls in route_registry:
-        if match := pattern.match(href):
-            params = match.groupdict()
-            return cls(**params)
-    return None
