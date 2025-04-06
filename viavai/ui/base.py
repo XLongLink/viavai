@@ -29,9 +29,11 @@ class Base:
     
     def _render(self) -> dict:
         """"""
+        raise NotImplementedError("Render method not implemented")
 
     def _event(self, event: str) -> None:
         """Handle an event"""
+        raise NotImplementedError("Event method not implemented")
 
     def __repr__(self):
         attrs = []

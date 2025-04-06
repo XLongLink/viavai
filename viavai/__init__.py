@@ -1,4 +1,4 @@
-from .app import App, Page
+from .ui import Page
 from .server import Server, Sidebar
 from .decorators import url
 from .context import state

@@ -7,7 +7,10 @@ import { Separator } from "@/components/ui/separator"
 import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
 import { ModeToggle } from "@/components/mode-toggle"
 import { Dev } from "./dev.tsx"
+
+import { Text } from "@/components/ui/text.tsx"
 import { Button, TypeButton } from "@/components/ui/button"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardAction } from "@/components/ui/card"
 
 // const MemoButton = React.memo<{ text: string }>(({ text }) => {
 //     return (
@@ -21,6 +24,18 @@ const UIRenderer = ({ children }: { children: TypeComponent[] }) => {
     const RenderComponent = (children: TypeComponent | string, index: number) => {
         if (typeof children === 'string') {
             return <> {children} </>
+        }
+
+        if (children.type === 'text') {
+            const text = children as TypeComponent;
+            return (
+                <Text
+                    key={index}
+                    {...(text.props || {})}
+                >
+                    {Array.isArray(text.children) ? text.children.map((child, index) => RenderComponent(child, index)) : text.children}
+                </Text>
+            );
         }
 
         if (children.type === 'button') {
@@ -92,16 +107,52 @@ export default function App() {
                         </header>
                         <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
                             <UIRenderer children={page.children} />
-                            <Dev />
-                            <Button onClick={() => {
-                                send('test', { test: 'test' })
-                            }}>Test</Button>
+
+                            <Text variant="title" size="2xl">
+                                Welcome to the Dashboard
+                            </Text>
+
+                            <Text variant="subtitle" size="lg">
+                                Manage your preferences below
+                            </Text>
+
+                            <Text variant="underline" size="base" className="cursor-pointer">
+                                Learn more
+                            </Text>
+
+                            <Text variant="muted" size="sm">
+                                Last updated 2 hours ago
+                            </Text>
+
+                            <Text variant="italic" size="base">
+                                This is an italic note.
+                            </Text>
+
+                            <Text asChild variant="subtitle" size="lg">
+                                <p>This is a paragraph with subtitle style.</p>
+                            </Text>
+
+                            {/* <Dev /> */}
+
+                            { /*
                             <div className="grid auto-rows-min gap-4 md:grid-cols-3">
                                 <div className="aspect-video rounded-xl bg-muted/50" />
                                 <div className="aspect-video rounded-xl bg-muted/50" />
                                 <div className="aspect-video rounded-xl bg-muted/50" />
                             </div>
-                            <div className="min-h-[100vh] flex-1 rounded-xl bg-muted/50 md:min-h-min" />
+                            <div className="min-h-[100vh] flex-1 rounded-xl bg-muted/50 md:min-h-min" /> 
+                            */}
+
+                            <Card>
+                                <CardHeader>
+                                    <CardTitle>GPU Deployment</CardTitle>
+                                    <CardDescription>Select a GPU instance for your workloads</CardDescription>
+                                </CardHeader>
+                                <CardContent>
+                                    <Button> Test </Button>
+                                </CardContent>
+                            </Card>
+
                         </div>
                     </SidebarInset>
                 </SidebarProvider>

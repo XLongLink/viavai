@@ -2,9 +2,9 @@ import json
 import uuid
 import asyncio
 from fastapi import WebSocket
-from .app import App
-from .context import context, UserContext
+from .context import state, UserContext
 from .decorators import get_class
+from .server import Server
 asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
 
 
@@ -14,9 +14,9 @@ class ConnectionManager:
     TODO: Implement a room system to allow multiple users to interact with the same app
     """
 
-    def __init__(self, app: App):
+    def __init__(self, app: Server.App):
         self._app = app
-        self._apps: dict[str, App] = {}
+        self._apps: dict[str, Server.App] = {}
         self._connections: dict[str, WebSocket] = {}
 
     async def connect(self, websocket: WebSocket) -> str:
@@ -28,11 +28,11 @@ class ConnectionManager:
 
         # Create the user context for the current connection
         user_context = UserContext(connection_id)
-        context.__var__.set(user_context)
+        state.__var__.set(user_context)
 
         # Initialize the App for the current connection
         # The initialization is done on a separate thread in case of heavy computation
-        app: App = await asyncio.to_thread(lambda: self._app())
+        app: Server.App = await asyncio.to_thread(lambda: self._app())
 
         # If an initial page is defined, set it
         if page := get_class("/"):
@@ -60,7 +60,7 @@ class ConnectionManager:
         # When a message arrives, can be included
         # An update to the app state
         # A user interaction
-        def handle_message(message: str, app: App):
+        def handle_message(message: str, app: Server.App):
             message = json.loads(message)
             app._event(message)
             return app._render()
