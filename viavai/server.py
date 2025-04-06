@@ -104,4 +104,4 @@ class Server(Starlette):
     def handle_message(self, message: str, app: App):
         """Send a message to a specific connection"""
         app._event(message)
-        return app._render()
+        return app.__render__()
