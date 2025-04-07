@@ -17,6 +17,10 @@ class Button(Base):
         self.__variant = variant
         self.__children__ = text
 
+    def set_text(self, text: str):
+        """Set the text of the button"""
+        self.__children__ = text
+
     def on_click(self, callback: callable):
         """Set the callback to be called when the button is clicked"""
         self.__on_click__ = callback

@@ -2,15 +2,18 @@ import os
 import json
 import uuid
 import asyncio
+asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
+
 import logging
 from starlette.routing import WebSocketRoute
 from starlette.websockets import WebSocket, WebSocketDisconnect
 from starlette.staticfiles import StaticFiles
 from starlette.applications import Starlette
 from .context import state, UserContext
-asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
 from .ui import Sidebar, Text
 from .page import Page
+
+
 
 class PageNotFound(Page):
     title = "404 - Page Not Found"
@@ -81,6 +84,7 @@ class Server(Starlette):
             self.App._side = element
 
     async def websocket(self, websocket: WebSocket):
+        print(websocket)
         await websocket.accept()
         connection_id = str(uuid.uuid4())
 
@@ -90,14 +94,9 @@ class Server(Starlette):
 
         # Initialize the App for the current connection
         # The initialization is done on a separate thread in case of heavy computation
+        
         app = await asyncio.to_thread(lambda: self.App())
         self._apps[connection_id] = app
-
-        # Send to the user the first render of the app
-        # NOTE: The render should be fast and not block the event loop
-        obj = self._apps[connection_id].__render__()
-        #print(json.dumps(obj, indent=2))
-        await websocket.send_text(json.dumps(obj))
 
         # Save the connection and return the ID
         self._connections[connection_id] = websocket

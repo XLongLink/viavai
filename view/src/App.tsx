@@ -136,9 +136,3 @@ export default function App() {
         </>
     )
 }
-
-// {main.components.map((component, index) => (
-//     <div key={index} className="rounded-xl bg-muted/50 p-4">
-//         {component}
-//     </div>
-// ))}
