@@ -1,8 +1,11 @@
 import os
 import json
 import uuid
+import sys
 import asyncio
-asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
+
+if sys.platform.startswith("win"):
+    asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
 
 import logging
 from starlette.routing import WebSocketRoute
