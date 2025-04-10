@@ -1,7 +1,7 @@
 from typing import Literal
 from ..base import Base
 
-type ButtonVariant = Literal[
+type TextVariant = Literal[
     "base",
     "title",
     "subtitle",
@@ -10,7 +10,7 @@ type ButtonVariant = Literal[
     "italic",
 ]
 
-type ButtonSize = Literal[
+type TextSize = Literal[
     "xs",
     "sm",
     "base",
@@ -31,10 +31,10 @@ class Text(Base):
     __type__: str = "text"
     __children__: str
     
-    __size: ButtonSize = "base"
-    __variant: ButtonVariant = "destructive"
+    __size: TextVariant = "base"
+    __variant: TextSize = "destructive"
 
-    def __init__(self, text: str, variant: ButtonVariant = "base", size: ButtonSize = "base"):
+    def __init__(self, text: str, variant: TextVariant = "base", size: TextSize = "base"):
         self.__size = size
         self.__variant = variant
         self.__children__ = text

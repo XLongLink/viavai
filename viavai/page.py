@@ -9,7 +9,6 @@ class Page(Base):
     __url__: re.Pattern = None
     
     title: str = "A ViaVai Page"
-    icon: str = "/images/logo.svg"
 
     # Page breadcrumb
     _breadcrumb: dict[str, str]
@@ -27,7 +26,6 @@ class Page(Base):
         
     def __render__(self) -> dict:
         return {
-            "icon": self.icon,
             "title": self.title,
             "breadcrumb": [
                 {"name": name, "href": href} for name, href in self._breadcrumb.items()

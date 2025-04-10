@@ -1,22 +1,27 @@
 from .subitem import SubItem
 from ..base import Base
-
+from ..types import TypeIcon
 
 class Item(Base):
-    name: str
-    icon: str
-    href: str
-    items: list[SubItem]
+    __name: str
+    __icon: TypeIcon = None
+    __href: str
+    __items: list[SubItem]
 
-    def add_subitem(self, name: str, *, icon: str = None, href: str = None) -> SubItem:
+    def __init__(self, name: str, icon: TypeIcon = None, href: str = None) -> None:
+        self.__name = name
+        self.__icon = icon
+        self.__href = href
+
+    def add_subitem(self, name: str, *, icon: TypeIcon = None, href: str = None) -> SubItem:
         subitem = SubItem(name=name, icon=icon, href=href)
-        self.items.append(subitem)
+        self.__items.append(subitem)
         return subitem
     
     def __render__(self) -> dict:
         return {
-            "name": self.name,
-            "icon": self.icon,
-            "href": self.href,
-            "items": [subitem.__render__() for subitem in self.items]
+            "name": self.__name,
+            "icon": self.__icon,
+            "href": self.__href,
+            "items": [subitem.__render__() for subitem in self.__items]
         }
