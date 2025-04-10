@@ -10,6 +10,7 @@ import { ModeToggle } from "@/components/mode-toggle"
 import { Text } from "@/components/ui/text.tsx"
 import { Button, TypeButton } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
+import { Dev } from "@/dev"
 
 // const MemoButton = React.memo<{ text: string }>(({ text }) => {
 //     return (
@@ -119,7 +120,7 @@ export default function App() {
                         <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
                             <UIRenderer children={page.children} />
 
-                            {/* <Dev /> */}
+                            <Dev />
 
                             { /*
                             <div className="grid auto-rows-min gap-4 md:grid-cols-3">
