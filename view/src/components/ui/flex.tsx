@@ -1,15 +1,12 @@
-// components/ui/flex-box.tsx
-
-import React from "react";
+import * as React from "react";
 import { cn } from "@/lib/utils";
+import type { TypeComponent } from "@/types"
 
-type FlexBoxProps = {
-    children: React.ReactNode;
+export interface FlexProps extends React.HTMLAttributes<HTMLDivElement> {
     variant?: "start" | "end" | "between" | "center" | "around";
-    className?: string;
-};
+}
 
-const variantMap: Record<NonNullable<FlexBoxProps["variant"]>, string> = {
+const variantMap: Record<NonNullable<FlexProps["variant"]>, string> = {
     start: "justify-start",
     end: "justify-end",
     between: "justify-between",
@@ -17,14 +14,27 @@ const variantMap: Record<NonNullable<FlexBoxProps["variant"]>, string> = {
     around: "justify-around",
 };
 
-export function Flex({ children, variant = "start", className }: FlexBoxProps) {
-    return (
-        <div className={cn("flex flex-wrap gap-4", variantMap[variant], className)}>
-            {React.Children.map(children, (child, i) => (
-                <div key={i} className="flex-1">
-                    {child}
-                </div>
-            ))}
-        </div>
-    );
-}
+const Flex = React.forwardRef<HTMLDivElement, FlexProps>(
+    ({ className, variant = "start", children, ...props }, ref) => {
+        return (
+            <div
+                className={cn(
+                    "flex flex-wrap gap-4",
+                    variantMap[variant],
+                    className
+                )}
+                ref={ref}
+                {...props}
+            >
+                {React.Children.map(children, (child, i) => (
+                    <div key={i} className="flex-1">
+                        {child}
+                    </div>
+                ))}
+            </div>
+        );
+    }
+);
+Flex.displayName = "Flex";
+
+export { Flex };

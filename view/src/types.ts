@@ -41,5 +41,5 @@ export interface TypeBreadcrumb {
 export interface TypeComponent {
 	type: string;
 	props: unknown;
-	children: TypeComponent[] | string;
+	node: string | TypeComponent[];
 }
